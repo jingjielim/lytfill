@@ -13,6 +13,8 @@ const onSignUpFailure = (response) => {
 
 const onSignInSuccess = (response) => {
   $('.sign-in-form').trigger('reset')
+  $('.signed-in').show()
+  $('.not-signed-in').hide()
   store.user = response.user
   console.log('Sign in success')
   console.log(response)
@@ -24,6 +26,8 @@ const onSignInFailure = (response) => {
 }
 
 const onSignOutSuccess = (response) => {
+  $('.signed-in').hide()
+  $('.not-signed-in').show()
   console.log('Sign out success')
   console.log(response)
 }
