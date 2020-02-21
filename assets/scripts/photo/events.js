@@ -46,7 +46,6 @@ const onUpdatePhoto = (event) => {
 
   const form = event.target
   const photoData = getFormFields(form)
-  console.log(event)
   api.updatePhoto(photoData)
     .then(function () {
       ui.onUpdatePhotoSuccess()
