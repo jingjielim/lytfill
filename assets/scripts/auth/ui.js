@@ -17,7 +17,6 @@ const onSignInSuccess = (response) => {
   $('.not-signed-in').hide()
   store.user = response.user
   console.log('Sign in success')
-  console.log(response)
 }
 
 const onSignInFailure = (response) => {
@@ -28,6 +27,7 @@ const onSignInFailure = (response) => {
 const onSignOutSuccess = (response) => {
   $('.signed-in').hide()
   $('.not-signed-in').show()
+  $('.content').empty()
   console.log('Sign out success')
   console.log(response)
 }

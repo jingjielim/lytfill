@@ -1,0 +1,17 @@
+{{#each photos as |photo|}}
+  <div class="card" style="width: 18rem;" data-id="{{photo.id}}">
+    <img src="{{photo.site}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">
+          {{limit photo.title 15}}
+        </h5>
+        <p class="card-text">
+          {{limit photo.description 50}}
+        </p>
+        {{#if photo.editable}}
+        <button class="btn btn-success btn-sm edit-btn" data-id="{{photo.id}}">Edit</button>
+        <button class="btn btn-danger btn-sm delete-btn" data-id="{{photo.id}}">Delete</button>
+        {{/if}}
+    </div>
+  </div>
+{{/each}}

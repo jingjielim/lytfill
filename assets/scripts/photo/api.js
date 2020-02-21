@@ -18,6 +18,16 @@ const getPhotos = () => {
   })
 }
 
+const getPhoto = (photoId) => {
+  return $.ajax({
+    url: config.apiUrl + '/photos/' + photoId,
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 const createPhoto = (photoData) => {
   return $.ajax({
     url: config.apiUrl + '/photos',
@@ -29,7 +39,31 @@ const createPhoto = (photoData) => {
   })
 }
 
+const deletePhoto = (photoId) => {
+  return $.ajax({
+    url: config.apiUrl + '/photos/' + photoId,
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
+const updatePhoto = (photoData) => {
+  return $.ajax({
+    url: config.apiUrl + '/photos/' + store.editPhotoId,
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    },
+    data: photoData
+  })
+}
+
 module.exports = {
   getPhotos,
-  createPhoto
+  createPhoto,
+  deletePhoto,
+  getPhoto,
+  updatePhoto
 }

@@ -18,9 +18,12 @@ $(() => {
   // Photo Event Listeners
   $('.get-photos').on('click', photoEvents.onGetPhotos)
   $('.create-photo-form').on('submit', photoEvents.onCreatePhoto)
+  $('.update-photo-form').on('submit', photoEvents.onUpdatePhoto)
+  $('.content').on('click', '.edit-btn', photoEvents.onEditPhoto)
+  $('.content').on('click', '.delete-btn', photoEvents.onDeletePhoto)
 
   // Dev code for fast sign in
-  // $('#signInEmail').val('j@jjj')
-  // $('#signInPass').val('1')
-  // $('.sign-in-form').submit()
+  $('#signInEmail').val('j@jjj')
+  $('#signInPass').val('1')
+  $('.sign-in-form').submit()
 })
