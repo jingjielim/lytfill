@@ -3,9 +3,7 @@ const getFormFields = require('../../../lib/get-form-fields')
 const api = require('./api')
 const ui = require('./ui')
 
-const onGetPhotos = (event) => {
-  event.preventDefault()
-
+const onGetPhotos = () => {
   api.getPhotos()
     .then(ui.onGetPhotosSuccess)
     .catch(ui.onGetPhotosFailure)

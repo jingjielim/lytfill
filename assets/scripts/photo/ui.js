@@ -5,8 +5,8 @@ const editPhotoTemplate = require('../templates/update-photo.handlebars')
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
-  $('.sys-message').append(`<p class="${type}"> ${msg}`)
-  $(`.${type}`).addClass(`${state}`)
+  $('.sys-message').append(`<div class="${type}"> ${msg} </div>`)
+  $(`.${type}`).addClass(`alert-${state} alert row`)
   setTimeout(() => {
     $(`.${type}`).remove()
   }, 5000)
@@ -14,6 +14,7 @@ const sysMsg = (type, state, msg) => {
 
 const onGetPhotosSuccess = (data) => {
   store.photos = data.photos
+  console.log(data)
   const showPhotosHtml = showPhotosTemplate({photos: data.photos})
   $('.content').html(showPhotosHtml)
 }
@@ -21,7 +22,7 @@ const onGetPhotosSuccess = (data) => {
 const onGetPhotosFailure = (response) => {
   const msg = `Failed to get Photos`
   const type = 'get-photos-f'
-  const state = 'failure'
+  const state = 'danger'
   sysMsg(type, state, msg)
 }
 
@@ -32,14 +33,14 @@ const onCreatePhotoSuccess = (response) => {
 const onCreatePhotoFailure = (response) => {
   const msg = `Failed to create new photo`
   const type = 'create-photos-f'
-  const state = 'failure'
+  const state = 'danger'
   sysMsg(type, state, msg)
 }
 
 const onDeletePhotoFailure = (response) => {
   const msg = `Failed to delete photo`
   const type = 'del-photos-f'
-  const state = 'failure'
+  const state = 'danger'
   sysMsg(type, state, msg)
 }
 
@@ -52,7 +53,7 @@ const onEditPhotoSuccess = (response) => {
 const onEditPhotoFailure = (response) => {
   const msg = `Failed to get photo to edit`
   const type = 'edit-photos-f'
-  const state = 'failure'
+  const state = 'danger'
   sysMsg(type, state, msg)
 }
 
@@ -64,7 +65,7 @@ const onUpdatePhotoSuccess = (response) => {
 const onUpdatePhotoFailure = (response) => {
   const msg = `Failed to update photo`
   const type = 'update-photos-f'
-  const state = 'failure'
+  const state = 'danger'
   sysMsg(type, state, msg)
 }
 

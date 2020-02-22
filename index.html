@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <title>Photos</title>
+      <title>Lytfill</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
       <!-- Do not add `link` tags-->
@@ -12,75 +12,101 @@
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
-      <h1>Photos</h1>
-      <p class="sys-message"></p>
-      <div class="not-signed-in">
-        <form class="sign-up-form form-group">
-          <h5>Sign Up</h5>
-          <div class="form-group">
-            <label for="signUpEmail">Email address</label>
-            <input type="email" class="form-control" id="signUpEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
-          </div>
-          <div class="form-group">
-            <label for="signUpPass">Password</label>
-            <input type="password" class="form-control" id="signUpPass" placeholder="********"  name="credentials[password]" required>
-          </div>
-          <div class="form-group">
-            <label for="signUpPassConfirm">Confirm Password</label>
-            <input type="password" class="form-control" id="signUpPassConfirm" placeholder="********" name="credentials[password_confirmation]" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Lytfill</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <form class="sign-in-form form-group">
-          <h5>Sign in</h5>
-          <div class="form-group">
-            <label for="signInEmail">Email address</label>
-            <input type="email" class="form-control" id="signInEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
-          </div>
-          <div class="form-group">
-            <label for="signInPass">Password</label>
-            <input type="password" class="form-control" id="signInPass" placeholder="********"  name="credentials[password]" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+          <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form> -->
+        </div>
+      </nav>
+      <div class="container">
+        <div class="sys-message container"></div>
+        <div class="not-signed-in">
+          <form class="sign-up-form form-group">
+            <h5>Sign Up</h5>
+            <div class="form-group">
+              <label for="signUpEmail">Email address</label>
+              <input type="email" class="form-control" id="signUpEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
+            </div>
+            <div class="form-group">
+              <label for="signUpPass">Password</label>
+              <input type="password" class="form-control" id="signUpPass" placeholder="********"  name="credentials[password]" required>
+            </div>
+            <div class="form-group">
+              <label for="signUpPassConfirm">Confirm Password</label>
+              <input type="password" class="form-control" id="signUpPassConfirm" placeholder="********" name="credentials[password_confirmation]" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+          <form class="sign-in-form form-group">
+            <h5>Sign in</h5>
+            <div class="form-group">
+              <label for="signInEmail">Email address</label>
+              <input type="email" class="form-control" id="signInEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
+            </div>
+            <div class="form-group">
+              <label for="signInPass">Password</label>
+              <input type="password" class="form-control" id="signInPass" placeholder="********"  name="credentials[password]" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
+        <div class="signed-in">
+          <form class="change-pw-form">
+            <div class="form-label-group">
+              <input class="form-control" name="passwords[old]" type="password" placeholder="Old password" required>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
+            </div>
+            <button class="btn btn-primary btn-sm" type="submit">Change Password</button>
+          </form>
+
+          <button class="btn btn-primary sign-out-btn">Sign out</button>
+
+          <form class="create-photo-form">
+            <h5>Share a new photo</h5>
+            <div class="form-group">
+              <label for="newURL">URL</label>
+              <input type="URL" class="form-control" id="newURL" placeholder="Image URL" name="photo[site]" required autofocus>
+            </div>
+            <div class="form-group">
+              <label for="newTitle">Title</label>
+              <input type="text" class="form-control" id="newTitle" placeholder="Photo title"  name="photo[title]" required>
+            </div>
+            <div class="form-group">
+              <label for="newDes">Description</label>
+              <textarea class="form-control" id="newDes" placeholder="Photo description"  name="photo[description]" rows='5' required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <button class="btn btn-primary get-photos">Get Photos</button>
+        <form class="update-photo-form">
         </form>
+        <section class="container">
+          <div class="content row"></div>
+        </section>
       </div>
-
-      <div class="signed-in">
-        <form class="change-pw-form">
-          <div class="form-label-group">
-            <input class="form-control" name="passwords[old]" type="password" placeholder="Old password" required>
-          </div>
-
-          <div class="form-label-group">
-            <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
-          </div>
-          <button class="btn btn-primary btn-sm" type="submit">Change Password</button>
-        </form>
-
-        <button class="btn btn-primary sign-out-btn">Sign out</button>
-
-        <form class="create-photo-form">
-          <h5>Share a new photo</h5>
-          <div class="form-group">
-            <label for="newURL">URL</label>
-            <input type="URL" class="form-control" id="newURL" placeholder="Image URL" name="photo[site]" required autofocus>
-          </div>
-          <div class="form-group">
-            <label for="newTitle">Title</label>
-            <input type="text" class="form-control" id="newTitle" placeholder="Photo title"  name="photo[title]" required>
-          </div>
-          <div class="form-group">
-            <label for="newDes">Description</label>
-            <textarea class="form-control" id="newDes" placeholder="Photo description"  name="photo[description]" rows='5' required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
-      <button class="btn btn-primary get-photos">Get Photos</button>
-      <form class="update-photo-form">
-      </form>
-      <section class="content">
-      </section>
     </body>
 </html>

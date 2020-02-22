@@ -1,8 +1,10 @@
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
-  $('.sys-message').append(`<p class="${type}"> ${msg}`)
-  $(`.${type}`).addClass(`${state}`)
+  $('.sys-message').append(`<div class="${type}  alert row alert-dismissible fade show" role="alert"> ${msg} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button> </div>`)
+  $(`.${type}`).addClass(`alert-${state}`)
   setTimeout(() => {
     $(`.${type}`).remove()
   }, 5000)
@@ -10,9 +12,9 @@ const sysMsg = (type, state, msg) => {
 
 const onSignUpSuccess = (response) => {
   $('.sign-up-form').trigger('reset')
-  const msg = `Sign up successful for ${response.user.email}`
+  const msg = `Sign up success for ${response.user.email}`
   const type = 'sign-up-s'
-  const state = 'successful'
+  const state = 'success'
   sysMsg(type, state, msg)
 }
 
@@ -23,7 +25,7 @@ const onSignUpFailure = (response) => {
     msg = msg + ' ' + key + ' ' + resText[key] + '. '
   }
   const type = 'sign-up-f'
-  const state = 'failure'
+  const state = 'danger'
   sysMsg(type, state, msg)
 }
 
@@ -34,7 +36,7 @@ const onSignInSuccess = (response) => {
   store.user = response.user
 
   const msg = `${response.user.email} signed in`
-  const state = 'successful'
+  const state = 'success'
   const type = 'sign-in-s'
   sysMsg(type, state, msg)
 }
@@ -46,7 +48,7 @@ const onSignInFailure = (response) => {
   } else {
     msg = 'Sign in failed'
   }
-  const state = 'failure'
+  const state = 'danger'
   const type = 'sign-in-f'
   sysMsg(type, state, msg)
   $('.sign-in-form').trigger('reset')
@@ -57,29 +59,29 @@ const onSignOutSuccess = (response) => {
   $('.not-signed-in').show()
   $('.content').empty()
   const msg = 'Signed out successfully'
-  const state = 'successful'
+  const state = 'success'
   const type = 'sign-out-s'
   sysMsg(type, state, msg)
 }
 
 const onSignOutFailure = (response) => {
   const msg = 'Signed out failed'
-  const state = 'failure'
+  const state = 'danger'
   const type = 'sign-out-f'
   sysMsg(type, state, msg)
 }
 
 const onChangePasswordSuccess = (response) => {
   $('.change-pw-form').trigger('reset')
-  const msg = 'Change password successful'
-  const state = 'successful'
+  const msg = 'Change password success'
+  const state = 'success'
   const type = 'change-pw-s'
   sysMsg(type, state, msg)
 }
 
 const onChangePasswordFailure = (response) => {
   const msg = 'Change password failed'
-  const state = 'failure'
+  const state = 'danger'
   const type = 'change-pw-f'
   sysMsg(type, state, msg)
 }
