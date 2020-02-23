@@ -1,0 +1,21 @@
+<div class="container">
+  <img src="{{photo.site}}" class="card-img-top" alt="..." data-id="{{photo.id}}">
+
+
+  <div class="card mb-3 mx-auto">
+    <div class="card-body">
+      <p class="card-text">
+        {{photo.description}}
+      </p>
+
+      <p class="card-text"><small class="text-muted">{{photo.user.email}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
+
+      {{#if photo.editable}}
+      <button class="btn btn-success btn-sm edit-btn" data-id="{{photo.id}}">Edit</button>
+      <button class="btn btn-danger btn-sm delete-btn" data-id="{{photo.id}}">Delete</button>
+      {{/if}}
+
+      <h5 class="mt-2">Comments</h5>
+    </div>
+  </div>
+</div>

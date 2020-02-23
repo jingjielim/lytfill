@@ -19,12 +19,18 @@ const getPhotos = () => {
 }
 
 const getPhoto = (photoId) => {
+  let auth
+  if (store.user) {
+    auth = {
+      Authorization: 'Token token=' + store.user.token
+    }
+  } else {
+    auth = 'none'
+  }
   return $.ajax({
     url: config.apiUrl + '/photos/' + photoId,
     method: 'GET',
-    headers: {
-      Authorization: 'Token token=' + store.user.token
-    }
+    headers: auth
   })
 }
 

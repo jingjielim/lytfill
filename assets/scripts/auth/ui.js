@@ -51,11 +51,11 @@ const onSignInSuccess = (response) => {
   $('.sign-in-form').trigger('reset')
   store.user = response.user
 
-  const msg = `${response.user.email} signed in`
+  const msg = `${store.user.email} signed in`
   const state = 'success'
   const type = 'sign-in-s'
   sysMsg(type, state, msg)
-  $('.navbar').html(signInNavTemplate())
+  $('.navbar').html(signInNavTemplate({user: store.user.email}))
   $('#signInModal').modal('hide')
 }
 
@@ -95,7 +95,7 @@ const onChangePasswordSuccess = (response) => {
   const state = 'success'
   const type = 'change-pw-s'
   sysMsg(type, state, msg)
-  $('.navbar').html(signInNavTemplate())
+  $('.navbar').html(signInNavTemplate({user: store.user.email}))
   $('#changePWModal').modal('hide')
 }
 

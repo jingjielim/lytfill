@@ -1,22 +1,14 @@
 {{#each photos as |photo|}}
   <div class="col-md-6 col-lg-4 col-xl-3">
     <div class="card mx-auto my-2"  data-id="{{photo.id}}">
-      <img src="{{photo.site}}" class="card-img-top" alt="...">
+      <img src="{{photo.site}}" class="card-img-top" alt="..." data-id="{{photo.id}}">
       <div class="card-body">
-        <h5 class="card-title">
-          {{limit photo.title 15}}
-        </h5>
         <p class="card-text">
           {{limit photo.description 50}}
         </p>
-        {{#if photo.editable}}
-        <button class="btn btn-success btn-sm edit-btn" data-id="{{photo.id}}">Edit</button>
-        <button class="btn btn-danger btn-sm delete-btn" data-id="{{photo.id}}">Delete</button>
-        {{/if}}
+        <p class="card-text"><small class="text-muted">{{photo.user.email}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
       </div>
-      <div class="card-footer text-muted">
-        {{timeDiff photo.created_at photo.updated_at}}
-      </div>
+
     </div>
   </div>
 

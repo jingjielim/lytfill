@@ -9,6 +9,14 @@ const onGetPhotos = () => {
     .catch(ui.onGetPhotosFailure)
 }
 
+const onGetPhoto = (event) => {
+  const photoId = $(event.target).data('id')
+
+  api.getPhoto(photoId)
+    .then(ui.onGetPhotoSuccess)
+    .catch(ui.onGetPhotoFailure)
+}
+
 const onCreatePhoto = (event) => {
   event.preventDefault()
 
@@ -59,6 +67,7 @@ const onSharePhoto = (event) => {
 }
 module.exports = {
   onGetPhotos,
+  onGetPhoto,
   onCreatePhoto,
   onDeletePhoto,
   onEditPhoto,

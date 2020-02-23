@@ -22,6 +22,7 @@ $(() => {
   $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
   $('.content').on('click', '.edit-btn', photoEvents.onEditPhoto)
   $('.content').on('click', '.delete-btn', photoEvents.onDeletePhoto)
+  $('.content').on('click', '.card-img-top', photoEvents.onGetPhoto)
 
   // Dev code for fast sign in
   $('#signInEmail').val('j@jjj')

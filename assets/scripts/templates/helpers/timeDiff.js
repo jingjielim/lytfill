@@ -7,9 +7,9 @@ const timeDiff = (created, updated) => {
   const timeDiff = timeNow - timeUpdated
 
   if (timeUpdated - timeCreated === 0) {
-    return `Posted ${timeString(timeDiff)}`
+    return `posted ${timeString(timeDiff)}`
   } else {
-    return `Updated ${timeString(timeDiff)}`
+    return `updated ${timeString(timeDiff)}`
   }
 }
 

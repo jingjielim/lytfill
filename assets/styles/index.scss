@@ -7,7 +7,14 @@
   background-size: cover;
 }
 
+.card-img-top {
+  max-height: 50vh;
+  object-fit: contain;
+}
 
+.wrapper {
+  margin-top: 60px;
+}
 // .success {
 //   color: limegreen;
 // }

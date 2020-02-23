@@ -1,6 +1,7 @@
 'use strict'
 
 const showPhotosTemplate = require('../templates/photo-listings.handlebars')
+const showPhotoTemplate = require('../templates/photo-show.handlebars')
 const editPhotoTemplate = require('../templates/update-photo.handlebars')
 const sharePhotoTemplate = require('../templates/share-photo.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
@@ -16,7 +17,7 @@ const sysMsg = (type, state, msg) => {
 
 const onSharePhoto = () => {
   $('.content').html(sharePhotoTemplate())
-  $('.navbar').html(signInNavTemplate())
+  $('.navbar').html(signInNavTemplate({user: store.user.email}))
 }
 
 const onGetPhotosSuccess = (data) => {
@@ -30,6 +31,16 @@ const onGetPhotosFailure = (response) => {
   const type = 'get-photos-f'
   const state = 'danger'
   sysMsg(type, state, msg)
+}
+
+const onGetPhotoSuccess = (response) => {
+  console.log(response.photo)
+  const showPhotoHtml = showPhotoTemplate({photo: response.photo})
+  $('.content').html(showPhotoHtml)
+}
+
+const onGetPhotoFailure = (response) => {
+  console.log(response)
 }
 
 const onCreatePhotoSuccess = (response) => {
@@ -83,6 +94,8 @@ const onUpdatePhotoFailure = (response) => {
 module.exports = {
   onGetPhotosSuccess,
   onGetPhotosFailure,
+  onGetPhotoSuccess,
+  onGetPhotoFailure,
   onCreatePhotoSuccess,
   onCreatePhotoFailure,
   onDeletePhotoFailure,
