@@ -4,6 +4,11 @@ const photoEvents = require('../photo/events')
 const api = require('./api')
 const ui = require('./ui')
 
+const onPageLoad = () => {
+  ui.onPageLoad()
+  photoEvents.onGetPhotos()
+}
+
 const onSignUp = (event) => {
   event.preventDefault()
 
@@ -47,6 +52,7 @@ const onSignOut = (event) => {
 }
 
 module.exports = {
+  onPageLoad,
   onSignUp,
   onSignIn,
   onChangePassword,

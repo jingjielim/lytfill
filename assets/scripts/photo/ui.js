@@ -2,6 +2,8 @@
 
 const showPhotosTemplate = require('../templates/photo-listings.handlebars')
 const editPhotoTemplate = require('../templates/update-photo.handlebars')
+const sharePhotoTemplate = require('../templates/share-photo.handlebars')
+const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
@@ -12,9 +14,13 @@ const sysMsg = (type, state, msg) => {
   }, 5000)
 }
 
+const onSharePhoto = () => {
+  $('.content').html(sharePhotoTemplate())
+  $('.navbar').html(signInNavTemplate())
+}
+
 const onGetPhotosSuccess = (data) => {
   store.photos = data.photos
-  console.log(data)
   const showPhotosHtml = showPhotosTemplate({photos: data.photos})
   $('.content').html(showPhotosHtml)
 }
@@ -47,7 +53,8 @@ const onDeletePhotoFailure = (response) => {
 const onEditPhotoSuccess = (response) => {
   const editPhotoHtml = editPhotoTemplate({photo: response.photo})
   store.editPhotoId = response.photo.id
-  $('.update-photo-form').html(editPhotoHtml)
+  console.log(store)
+  $('.content').html(editPhotoHtml)
 }
 
 const onEditPhotoFailure = (response) => {
@@ -60,6 +67,10 @@ const onEditPhotoFailure = (response) => {
 const onUpdatePhotoSuccess = (response) => {
   store.editPhotoId = null
   $('.update-photo-form').empty()
+  const msg = `Photo updated!`
+  const type = 'update-photos-s'
+  const state = 'success'
+  sysMsg(type, state, msg)
 }
 
 const onUpdatePhotoFailure = (response) => {
@@ -78,5 +89,6 @@ module.exports = {
   onEditPhotoSuccess,
   onEditPhotoFailure,
   onUpdatePhotoSuccess,
-  onUpdatePhotoFailure
+  onUpdatePhotoFailure,
+  onSharePhoto
 }

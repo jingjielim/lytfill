@@ -1,0 +1,18 @@
+<div class="col-12">
+  <form class="create-photo-form">
+    <h5>Share a new photo</h5>
+    <div class="form-group">
+      <label for="newURL">URL</label>
+      <input type="URL" class="form-control" id="newURL" placeholder="Image URL" name="photo[site]" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="newTitle">Title</label>
+      <input type="text" class="form-control" id="newTitle" placeholder="Photo title"  name="photo[title]" required>
+    </div>
+    <div class="form-group">
+      <label for="newDes">Description</label>
+      <textarea class="form-control" id="newDes" placeholder="Photo description"  name="photo[description]" rows='5' required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

@@ -13,97 +13,116 @@
     </head>
     <body>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Lytfill</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarToggler">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
-          <!-- <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form> -->
-        </div>
       </nav>
       <div class="container">
         <div class="sys-message container"></div>
-        <div class="not-signed-in">
-          <form class="sign-up-form form-group">
-            <h5>Sign Up</h5>
-            <div class="form-group">
-              <label for="signUpEmail">Email address</label>
-              <input type="email" class="form-control" id="signUpEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
-            </div>
-            <div class="form-group">
-              <label for="signUpPass">Password</label>
-              <input type="password" class="form-control" id="signUpPass" placeholder="********"  name="credentials[password]" required>
-            </div>
-            <div class="form-group">
-              <label for="signUpPassConfirm">Confirm Password</label>
-              <input type="password" class="form-control" id="signUpPassConfirm" placeholder="********" name="credentials[password_confirmation]" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
 
-          <form class="sign-in-form form-group">
-            <h5>Sign in</h5>
-            <div class="form-group">
-              <label for="signInEmail">Email address</label>
-              <input type="email" class="form-control" id="signInEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
+        <!-- Sign Up Modal Start -->
+        <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="sign-up-f-message"></div>
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="card-body">
+                      <form class="sign-up-form form-group">
+                        <div class="form-group">
+                          <label for="signUpEmail">Email address</label>
+                          <input type="email" class="form-control" id="signUpEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
+                        </div>
+                        <div class="form-group">
+                          <label for="signUpPass">Password</label>
+                          <input type="password" class="form-control" id="signUpPass" placeholder="********"  name="credentials[password]" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="signUpPassConfirm">Confirm Password</label>
+                          <input type="password" class="form-control" id="signUpPassConfirm" placeholder="********" name="credentials[password_confirmation]" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="signInPass">Password</label>
-              <input type="password" class="form-control" id="signInPass" placeholder="********"  name="credentials[password]" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+          </div>
         </div>
 
-        <div class="signed-in">
-          <form class="change-pw-form">
-            <div class="form-label-group">
-              <input class="form-control" name="passwords[old]" type="password" placeholder="Old password" required>
+        <!-- Sign In Modal Start -->
+        <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Sign In</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="sign-in-f-message"></div>
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="card-body">
+                      <form class="sign-in-form form-group">
+                        <div class="form-group">
+                          <label for="signInEmail">Email address</label>
+                          <input type="email" class="form-control" id="signInEmail" placeholder="john@apple.com" name="credentials[email]" required autofocus>
+                        </div>
+                        <div class="form-group">
+                          <label for="signInPass">Password</label>
+                          <input type="password" class="form-control" id="signInPass" placeholder="********"  name="credentials[password]" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div class="form-label-group">
-              <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
-            </div>
-            <button class="btn btn-primary btn-sm" type="submit">Change Password</button>
-          </form>
-
-          <button class="btn btn-primary sign-out-btn">Sign out</button>
-
-          <form class="create-photo-form">
-            <h5>Share a new photo</h5>
-            <div class="form-group">
-              <label for="newURL">URL</label>
-              <input type="URL" class="form-control" id="newURL" placeholder="Image URL" name="photo[site]" required autofocus>
-            </div>
-            <div class="form-group">
-              <label for="newTitle">Title</label>
-              <input type="text" class="form-control" id="newTitle" placeholder="Photo title"  name="photo[title]" required>
-            </div>
-            <div class="form-group">
-              <label for="newDes">Description</label>
-              <textarea class="form-control" id="newDes" placeholder="Photo description"  name="photo[description]" rows='5' required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+          </div>
         </div>
-        <button class="btn btn-primary get-photos">Get Photos</button>
-        <form class="update-photo-form">
-        </form>
+
+        <!-- Change password modal -->
+        <div class="modal fade" id="changePWModal" tabindex="-1" role="dialog" aria-labelledby="changePWModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="change-pw-f-message"></div>
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="card-body">
+                      <form class="change-pw-form">
+                        <div class="form-group">
+                          <label for="oldPW">Old Password</label>
+                          <input type="password" class="form-control" id="oldPW" placeholder="********" name="passwords[old]" required autofocus>
+                        </div>
+                        <div class="form-group">
+                          <label for="newPW">New Password</label>
+                          <input type="password" class="form-control" id="newPW" placeholder="********"  name="passwords[new]" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <section class="container">
           <div class="content row"></div>
         </section>

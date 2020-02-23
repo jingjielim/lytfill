@@ -8,18 +8,18 @@ const photoEvents = require('./photo/events')
 // require('./example')
 
 $(() => {
-  $('.signed-in').hide()
-  // photoEvents.onGetPhotos()
+  authEvents.onPageLoad()
   // Auth Event Listeners
   $('.sign-up-form').on('submit', authEvents.onSignUp)
   $('.sign-in-form').on('submit', authEvents.onSignIn)
-  $('.sign-out-btn').on('click', authEvents.onSignOut)
+  $('.navbar').on('click', '.sign-out-btn', authEvents.onSignOut)
   $('.change-pw-form').on('submit', authEvents.onChangePassword)
 
   // Photo Event Listeners
-  // $('.get-photos').on('click', )
-  $('.create-photo-form').on('submit', photoEvents.onCreatePhoto)
-  $('.update-photo-form').on('submit', photoEvents.onUpdatePhoto)
+  $('.navbar').on('click', '.share-photo', photoEvents.onSharePhoto)
+  $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
+  $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
+  $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
   $('.content').on('click', '.edit-btn', photoEvents.onEditPhoto)
   $('.content').on('click', '.delete-btn', photoEvents.onDeletePhoto)
 

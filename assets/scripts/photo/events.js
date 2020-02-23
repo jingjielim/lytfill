@@ -44,6 +44,7 @@ const onUpdatePhoto = (event) => {
 
   const form = event.target
   const photoData = getFormFields(form)
+  console.log(event)
   api.updatePhoto(photoData)
     .then(function () {
       ui.onUpdatePhotoSuccess()
@@ -52,10 +53,15 @@ const onUpdatePhoto = (event) => {
     .catch(ui.onUpdatePhotoFailure)
 }
 
+const onSharePhoto = (event) => {
+  event.preventDefault()
+  ui.onSharePhoto()
+}
 module.exports = {
   onGetPhotos,
   onCreatePhoto,
   onDeletePhoto,
   onEditPhoto,
-  onUpdatePhoto
+  onUpdatePhoto,
+  onSharePhoto
 }
