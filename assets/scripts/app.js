@@ -33,7 +33,7 @@ $(() => {
   // $('.content').on('click', '.no-like', (event) => $(event.target).removeClass('no-like far').addClass('like fas'))
 
   // Dev code for fast sign in
-  $('#signInEmail').val('j@jjj')
-  $('#signInPass').val('1')
-  $('.sign-in-form').submit()
+  // $('#signInEmail').val('j@jjj')
+  // $('#signInPass').val('1')
+  // $('.sign-in-form').submit()
 })
