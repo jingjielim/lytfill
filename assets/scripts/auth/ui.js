@@ -28,7 +28,7 @@ const onPageLoad = () => {
 
 const onSignUpSuccess = (response) => {
   $('.sign-up-form').trigger('reset')
-  const msg = `Sign up success for ${response.user.email}`
+  const msg = `Sign up success for ${response.user.name}`
   const type = 'sign-up-s'
   const state = 'success'
   sysMsg(type, state, msg)
@@ -51,11 +51,11 @@ const onSignInSuccess = (response) => {
   $('.sign-in-form').trigger('reset')
   store.user = response.user
 
-  const msg = `${store.user.email} signed in`
+  const msg = `${store.user.name} signed in`
   const state = 'success'
   const type = 'sign-in-s'
   sysMsg(type, state, msg)
-  $('.navbar').html(signInNavTemplate({user: store.user.email}))
+  $('.navbar').html(signInNavTemplate({user: store.user.name}))
   $('#signInModal').modal('hide')
 }
 
@@ -92,11 +92,12 @@ const onChangePasswordSuccess = (response) => {
   const state = 'success'
   const type = 'change-pw-s'
   sysMsg(type, state, msg)
-  $('.navbar').html(signInNavTemplate({user: store.user.email}))
+  $('.navbar').html(signInNavTemplate({user: store.user.name}))
   $('#changePWModal').modal('hide')
 }
 
 const onChangePasswordFailure = (response) => {
+  $('.change-pw-form').trigger('reset')
   const msg = 'Change password failed'
   const state = 'danger'
   const type = 'change-pw-f'

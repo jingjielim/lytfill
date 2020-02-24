@@ -10,7 +10,7 @@
       </p>
 
       <p class="card-text"><small class="text-muted">
-        {{photo.user.email}} {{timeDiff photo.created_at photo.updated_at}}</small>
+        {{photo.user.name}} {{timeDiff photo.created_at photo.updated_at}}</small>
         {{#if photo.editable}}
           <i class="far fa-trash-alt delete-photo-btn text-danger clickable" data-id="{{photo.id}}"></i>
         {{/if}}

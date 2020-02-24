@@ -18,7 +18,7 @@ const sysMsg = (type, state, msg) => {
 
 const onSharePhoto = () => {
   $('.content').html(sharePhotoTemplate())
-  $('.navbar').html(signInNavTemplate({user: store.user.email}))
+  $('.navbar').html(signInNavTemplate({user: store.user.name}))
 }
 
 const onGetPhotosSuccess = (data) => {
@@ -43,14 +43,17 @@ const onGetPhotoSuccess = (response) => {
 const onGetPhotoComments = (response) => {
   let showCommentsHtml = ''
   response.photo.comments.forEach(comment => {
-    const commentHtml = commentTemplate({comment: comment, isUserOwner: (comment.owner === store.user.email)})
+    const commentHtml = commentTemplate({comment: comment, isUserOwner: (comment.owner === store.user.name)})
     showCommentsHtml += (commentHtml)
   })
   $('.comments').append(showCommentsHtml)
 }
 
 const onGetPhotoFailure = (response) => {
-  console.log(response)
+  const msg = `Failed to get photo`
+  const type = 'get-photo-f'
+  const state = 'danger'
+  sysMsg(type, state, msg)
 }
 
 const onCreatePhotoSuccess = (response) => {
@@ -59,7 +62,7 @@ const onCreatePhotoSuccess = (response) => {
 
 const onCreatePhotoFailure = (response) => {
   const msg = `Failed to create new photo`
-  const type = 'create-photos-f'
+  const type = 'create-photo-f'
   const state = 'danger'
   sysMsg(type, state, msg)
 }
@@ -70,8 +73,6 @@ const onDeletePhotoSuccess = (response) => {
   sysMsg(type, state, msg)
 }
 const onDeletePhotoFailure = (response) => {
-  console.log(response)
-  console.log(response.responseText)
   const msg = `Failed to delete photo`
   const type = 'del-photos-f'
   const state = 'danger'
@@ -108,7 +109,7 @@ const onUpdatePhotoFailure = (response) => {
 }
 const onAddCommentSuccess = (response) => {
   $('.comment-form').trigger('reset')
-  const newCommentHtml = commentTemplate({comment: response.comment, isUserOwner: (response.comment.owner === store.user.email)})
+  const newCommentHtml = commentTemplate({comment: response.comment, isUserOwner: (response.comment.owner === store.user.name)})
   $('.comments').append(newCommentHtml)
 }
 
