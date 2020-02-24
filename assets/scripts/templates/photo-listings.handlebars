@@ -1,5 +1,5 @@
 {{#each photos as |photo|}}
-  <div class="col-md-6 col-lg-4 col-xl-3">
+  <div class="col-md-6 col-lg-4 col-xl-3 grid-item {{photo.user.name}}">
     <div class="card mx-auto my-2"  data-id="{{photo.id}}">
       <img src="{{photo.site}}" class="card-img-top clickable" alt="..." data-id="{{photo.id}}">
       <div class="card-body pt-2">

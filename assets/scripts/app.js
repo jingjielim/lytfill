@@ -21,6 +21,8 @@ $(() => {
   })
   $('.navbar').on('click', '.share-photo', photoEvents.onSharePhoto)
   $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
+  $('.navbar').on('click', '.my-photos', photoEvents.onGetMyPhotos)
+
   $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
   $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
   $('.content').on('submit', '.comment-form', photoEvents.onAddComment)
@@ -33,7 +35,7 @@ $(() => {
   // $('.content').on('click', '.no-like', (event) => $(event.target).removeClass('no-like far').addClass('like fas'))
 
   // Dev code for fast sign in
-  // $('#signInEmail').val('j@jjj')
+  // $('#signInEmail').val('jingjie@gmail.com')
   // $('#signInPass').val('1')
   // $('.sign-in-form').submit()
 })

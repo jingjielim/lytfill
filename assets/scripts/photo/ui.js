@@ -81,7 +81,6 @@ const onDeletePhotoFailure = (response) => {
 
 const onEditPhotoSuccess = (response) => {
   const editPhotoHtml = editPhotoTemplate({photo: response.photo})
-  // store.editPhotoId = response.photo.id
   $('.content').html(editPhotoHtml)
 }
 
@@ -93,7 +92,6 @@ const onEditPhotoFailure = (response) => {
 }
 
 const onUpdatePhotoSuccess = (response) => {
-  // store.editPhotoId = null
   $('.update-photo-form').empty()
   const msg = `Post updated!`
   const type = 'update-photos-s'
