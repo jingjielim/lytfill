@@ -1,5 +1,6 @@
 'use strict'
 const getFormFields = require('../../../lib/get-form-fields')
+const store = require('../store')
 const api = require('./api')
 const ui = require('./ui')
 
@@ -49,11 +50,11 @@ const onEditPhoto = (event) => {
 
 const onUpdatePhoto = (event) => {
   event.preventDefault()
-
+  const photoId = $(event.target).data('id')
   const form = event.target
   const photoData = getFormFields(form)
-  console.log(event)
-  api.updatePhoto(photoData)
+
+  api.updatePhoto(photoData, photoId)
     .then(function () {
       ui.onUpdatePhotoSuccess()
       onGetPhotos(event)
@@ -65,6 +66,16 @@ const onSharePhoto = (event) => {
   event.preventDefault()
   ui.onSharePhoto()
 }
+
+const onAddComment = (event) => {
+  event.preventDefault()
+  console.log(event.target)
+  const form = event.target
+  const commentData = getFormFields(form)
+  api.addComment(commentData)
+    .then(ui.onAddCommentSuccess)
+    .catch(ui.onAddCommentFailure)
+}
 module.exports = {
   onGetPhotos,
   onGetPhoto,
@@ -72,5 +83,6 @@ module.exports = {
   onDeletePhoto,
   onEditPhoto,
   onUpdatePhoto,
-  onSharePhoto
+  onSharePhoto,
+  onAddComment
 }

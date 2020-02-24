@@ -20,6 +20,7 @@ $(() => {
   $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
   $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
   $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
+  $('.content').on('submit', '.comment-form', photoEvents.onAddComment)
   $('.content').on('click', '.edit-btn', photoEvents.onEditPhoto)
   $('.content').on('click', '.delete-btn', photoEvents.onDeletePhoto)
   $('.content').on('click', '.card-img-top', photoEvents.onGetPhoto)

@@ -72,14 +72,11 @@ const onSignInFailure = (response) => {
 }
 
 const onSignOutSuccess = (response) => {
-  $('.signed-in').hide()
-  $('.not-signed-in').show()
-  $('.content').empty()
+  store.user = null
   const msg = 'Signed out successfully'
   const state = 'success'
   const type = 'sign-out-s'
   sysMsg(type, state, msg)
-  $('.navbar').html(signOutNavTemplate())
 }
 
 const onSignOutFailure = (response) => {

@@ -16,6 +16,22 @@
       {{/if}}
 
       <h5 class="mt-2">Comments</h5>
+      <div class="comments">
+        {{#each photo.comments as |comment|}}
+          {{> render-new-comment comment=comment}}
+        {{/each}}
+      </div>
+      {{#if isSignedIn}}
+      <form class="comment-form form-inline" data-id="{{photo.id}}">
+        <div class="form-group mb-2">
+          <label for="newComment" class="sr-only">Comment</label>
+          <input type="text" class="form-control" id="newComment" name='comment[content]' placeholder="Add comment">
+          <input type='integer' hidden='true' name='comment[photo_id]' value='{{photo.id}}'>
+        </div>
+        <button type="submit" class="comment-btn btn btn-primary ml-2 mb-2">Post</button>
+      </form>
+      {{/if}}
+
     </div>
   </div>
 </div>

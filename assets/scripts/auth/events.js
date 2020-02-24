@@ -44,9 +44,9 @@ const onSignOut = (event) => {
   event.preventDefault()
 
   api.signOut()
-    .then(function (response) {
-      ui.onSignOutSuccess(response)
-      photoEvents.onGetPhotos()
+    .then(() => {
+      ui.onSignOutSuccess()
+      onPageLoad()
     })
     .catch(ui.onSignOutFailure)
 }

@@ -55,9 +55,9 @@ const deletePhoto = (photoId) => {
   })
 }
 
-const updatePhoto = (photoData) => {
+const updatePhoto = (photoData, photoId) => {
   return $.ajax({
-    url: config.apiUrl + '/photos/' + store.editPhotoId,
+    url: config.apiUrl + '/photos/' + photoId,
     method: 'PATCH',
     headers: {
       Authorization: 'Token token=' + store.user.token
@@ -66,10 +66,22 @@ const updatePhoto = (photoData) => {
   })
 }
 
+const addComment = (commentData) => {
+  return $.ajax({
+    url: config.apiUrl + '/comments',
+    method: 'POST',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    },
+    data: commentData
+  })
+}
+
 module.exports = {
   getPhotos,
   createPhoto,
   deletePhoto,
   getPhoto,
-  updatePhoto
+  updatePhoto,
+  addComment
 }

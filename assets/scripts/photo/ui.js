@@ -5,6 +5,7 @@ const showPhotoTemplate = require('../templates/photo-show.handlebars')
 const editPhotoTemplate = require('../templates/update-photo.handlebars')
 const sharePhotoTemplate = require('../templates/share-photo.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
+const commentTemplate = require('../templates/render-new-comment.handlebars')
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
@@ -21,7 +22,7 @@ const onSharePhoto = () => {
 }
 
 const onGetPhotosSuccess = (data) => {
-  store.photos = data.photos
+  // store.photos = data.photos
   const showPhotosHtml = showPhotosTemplate({photos: data.photos})
   $('.content').html(showPhotosHtml)
 }
@@ -34,8 +35,7 @@ const onGetPhotosFailure = (response) => {
 }
 
 const onGetPhotoSuccess = (response) => {
-  console.log(response.photo)
-  const showPhotoHtml = showPhotoTemplate({photo: response.photo})
+  const showPhotoHtml = showPhotoTemplate({photo: response.photo, isSignedIn: store.user})
   $('.content').html(showPhotoHtml)
 }
 
@@ -90,6 +90,15 @@ const onUpdatePhotoFailure = (response) => {
   const state = 'danger'
   sysMsg(type, state, msg)
 }
+const onAddCommentSuccess = (response) => {
+  $('.comment-form').trigger('reset')
+  const newCommentHtml = commentTemplate({comment: response.comment})
+  $('.comments').append(newCommentHtml)
+}
+const onAddCommentFailure = (response) => {
+  console.log(response.responseText)
+
+}
 
 module.exports = {
   onGetPhotosSuccess,
@@ -103,5 +112,7 @@ module.exports = {
   onEditPhotoFailure,
   onUpdatePhotoSuccess,
   onUpdatePhotoFailure,
-  onSharePhoto
+  onSharePhoto,
+  onAddCommentSuccess,
+  onAddCommentFailure
 }
