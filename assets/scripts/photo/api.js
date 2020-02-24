@@ -77,11 +77,22 @@ const addComment = (commentData) => {
   })
 }
 
+const deleteComment = (commentId) => {
+  return $.ajax({
+    url: config.apiUrl + '/comments/' + commentId,
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 module.exports = {
   getPhotos,
   createPhoto,
   deletePhoto,
   getPhoto,
   updatePhoto,
-  addComment
+  addComment,
+  deleteComment
 }

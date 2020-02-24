@@ -1,19 +1,26 @@
 @import '~bootstrap/scss/bootstrap';
-.bg {
-  background:black;
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+body {
+  font-family: 'Montserrat';
 }
-
-.card-img-top {
+.photo-show{
   max-height: 50vh;
   object-fit: contain;
 }
 
 .wrapper {
   margin-top: 60px;
+}
+
+.fas.fa-heart {
+  color: red;
+}
+
+.fa-plus-square {
+  color: #5AF;
+}
+
+.clickable {
+  cursor: pointer;
 }
 // .success {
 //   color: limegreen;

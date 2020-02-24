@@ -35,8 +35,18 @@ const onGetPhotosFailure = (response) => {
 }
 
 const onGetPhotoSuccess = (response) => {
-  const showPhotoHtml = showPhotoTemplate({photo: response.photo, isSignedIn: store.user})
+  const showPhotoHtml = showPhotoTemplate({photo: response.photo, currentUser: store.user})
   $('.content').html(showPhotoHtml)
+  onGetPhotoComments(response)
+}
+
+const onGetPhotoComments = (response) => {
+  let showCommentsHtml = ''
+  response.photo.comments.forEach(comment => {
+    const commentHtml = commentTemplate({comment: comment, isUserOwner: (comment.owner === store.user.email)})
+    showCommentsHtml += (commentHtml)
+  })
+  $('.comments').append(showCommentsHtml)
 }
 
 const onGetPhotoFailure = (response) => {
@@ -53,7 +63,12 @@ const onCreatePhotoFailure = (response) => {
   const state = 'danger'
   sysMsg(type, state, msg)
 }
-
+const onDeletePhotoSuccess = (response) => {
+  const msg = `Photo deleted`
+  const type = 'delete-photo-s'
+  const state = 'success'
+  sysMsg(type, state, msg)
+}
 const onDeletePhotoFailure = (response) => {
   console.log(response)
   console.log(response.responseText)
@@ -65,8 +80,7 @@ const onDeletePhotoFailure = (response) => {
 
 const onEditPhotoSuccess = (response) => {
   const editPhotoHtml = editPhotoTemplate({photo: response.photo})
-  store.editPhotoId = response.photo.id
-  console.log(store)
+  // store.editPhotoId = response.photo.id
   $('.content').html(editPhotoHtml)
 }
 
@@ -78,9 +92,9 @@ const onEditPhotoFailure = (response) => {
 }
 
 const onUpdatePhotoSuccess = (response) => {
-  store.editPhotoId = null
+  // store.editPhotoId = null
   $('.update-photo-form').empty()
-  const msg = `Photo updated!`
+  const msg = `Post updated!`
   const type = 'update-photos-s'
   const state = 'success'
   sysMsg(type, state, msg)
@@ -94,12 +108,29 @@ const onUpdatePhotoFailure = (response) => {
 }
 const onAddCommentSuccess = (response) => {
   $('.comment-form').trigger('reset')
-  const newCommentHtml = commentTemplate({comment: response.comment})
+  const newCommentHtml = commentTemplate({comment: response.comment, isUserOwner: (response.comment.owner === store.user.email)})
   $('.comments').append(newCommentHtml)
 }
-const onAddCommentFailure = (response) => {
-  console.log(response.responseText)
 
+const onAddCommentFailure = (response) => {
+  const msg = `Failed to add comment`
+  const type = 'add-comment-f'
+  const state = 'danger'
+  sysMsg(type, state, msg)
+}
+
+const onDeleteCommentSuccess = (response) => {
+  const msg = `Comment deleted`
+  const type = 'add-comment-f'
+  const state = 'success'
+  sysMsg(type, state, msg)
+}
+
+const onDeleteCommentFailure = (response) => {
+  const msg = `Failed to delete comment`
+  const type = 'delete-comment-f'
+  const state = 'danger'
+  sysMsg(type, state, msg)
 }
 
 module.exports = {
@@ -109,6 +140,7 @@ module.exports = {
   onGetPhotoFailure,
   onCreatePhotoSuccess,
   onCreatePhotoFailure,
+  onDeletePhotoSuccess,
   onDeletePhotoFailure,
   onEditPhotoSuccess,
   onEditPhotoFailure,
@@ -116,5 +148,7 @@ module.exports = {
   onUpdatePhotoFailure,
   onSharePhoto,
   onAddCommentSuccess,
-  onAddCommentFailure
+  onAddCommentFailure,
+  onDeleteCommentSuccess,
+  onDeleteCommentFailure
 }

@@ -1,17 +1,16 @@
 <div class="col-12">
   <form class="update-photo-form" data-id="{{photo.id}}">
     <h5>Edit photo</h5>
-    <div class="form-group">
-      <label for="newURL">URL</label>
-      <input type="URL" class="form-control" id="newURL" value="{{photo.site}}" name="photo[site]" required autofocus>
+    <img src="{{photo.site}}" style="max-height: 200px;" class="preview-img my-2 mx-auto d-block img-thumbnail">
+    <div class="form-group form-inline">
+      <label for="newURL" class="sr-only">URL</label>
+      <input type="URL" class="form-control my-1 mr-2 photo-url" id="newURL" placeholder="Image URL" style="width: 80%" value="{{photo.site}}" name="photo[site]" required autofocus>
+
+      <button type="button" class="btn btn-primary preview">Preview</button>
     </div>
-    <div class="form-group">
-      <label for="newTitle">Title</label>
-      <input type="text" class="form-control" id="newTitle" value="{{photo.title}}" name="photo[title]" required>
-    </div>
-    <div class="form-group">
-      <label for="newDes">Description</label>
-      <textarea class="form-control" id="newDes" name="photo[description]" rows='5' required>{{photo.description}}</textarea>
+    <div class="form-group mb-2 mr-2">
+      <label for="newDes" class="sr-only">Description</label>
+      <textarea class="form-control" id="newDes" placeholder="Photo description" name="photo[description]" rows='5' required>{{photo.description}}</textarea>
     </div>
     <button type="submit" class="btn btn-primary edit-submit-btn">Submit</button>
   </form>

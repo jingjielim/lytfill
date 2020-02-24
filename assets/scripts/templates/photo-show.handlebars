@@ -1,37 +1,34 @@
 <div class="container">
-  <img src="{{photo.site}}" class="card-img-top" alt="..." data-id="{{photo.id}}">
-
-
-  <div class="card mb-3 mx-auto">
+  <img src="{{photo.site}}" class="d-block mx-auto img-thumbnail photo-show" data-id="{{photo.id}}">
+  <div class="card my-2 mx-auto">
     <div class="card-body">
       <p class="card-text">
         {{photo.description}}
+        {{#if photo.editable}}
+          <i class="far fa-edit edit-photo-btn text-success clickable" data-id="{{photo.id}}"></i>
+        {{/if}}
       </p>
 
-      <p class="card-text"><small class="text-muted">{{photo.user.email}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
-
-      {{#if photo.editable}}
-      <button class="btn btn-success btn-sm edit-btn" data-id="{{photo.id}}">Edit</button>
-      <button class="btn btn-danger btn-sm delete-btn" data-id="{{photo.id}}">Delete</button>
-      {{/if}}
-
-      <h5 class="mt-2">Comments</h5>
+      <p class="card-text"><small class="text-muted">
+        {{photo.user.email}} {{timeDiff photo.created_at photo.updated_at}}</small>
+        {{#if photo.editable}}
+          <i class="far fa-trash-alt delete-photo-btn text-danger clickable" data-id="{{photo.id}}"></i>
+        {{/if}}
+      </p>
       <div class="comments">
-        {{#each photo.comments as |comment|}}
-          {{> render-new-comment comment=comment}}
-        {{/each}}
       </div>
-      {{#if isSignedIn}}
-      <form class="comment-form form-inline" data-id="{{photo.id}}">
+      {{#if currentUser}}
+      <form class="comment-form form-inline mt-2" data-id="{{photo.id}}">
         <div class="form-group mb-2">
           <label for="newComment" class="sr-only">Comment</label>
-          <input type="text" class="form-control" id="newComment" name='comment[content]' placeholder="Add comment">
+          <input type="text" class="form-control form-control-sm" id="newComment" name='comment[content]' placeholder="Add comment">
           <input type='integer' hidden='true' name='comment[photo_id]' value='{{photo.id}}'>
         </div>
-        <button type="submit" class="comment-btn btn btn-primary ml-2 mb-2">Post</button>
+        <button type="submit" class="btn btn-primary btn-sm comment-btn ml-2 mb-2">Post</button>
       </form>
       {{/if}}
 
     </div>
   </div>
+
 </div>

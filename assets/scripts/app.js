@@ -16,14 +16,21 @@ $(() => {
   $('.change-pw-form').on('submit', authEvents.onChangePassword)
 
   // Photo Event Listeners
+  $('.content').on('click', '.preview', () => {
+    photoEvents.onPreviewPhoto($('.photo-url').val())
+  })
   $('.navbar').on('click', '.share-photo', photoEvents.onSharePhoto)
   $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
   $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
   $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
   $('.content').on('submit', '.comment-form', photoEvents.onAddComment)
-  $('.content').on('click', '.edit-btn', photoEvents.onEditPhoto)
-  $('.content').on('click', '.delete-btn', photoEvents.onDeletePhoto)
+  $('.content').on('click', '.edit-photo-btn', photoEvents.onEditPhoto)
+  $('.content').on('click', '.delete-photo-btn', photoEvents.onDeletePhoto)
+  $('.content').on('click', '.delete-comment-btn', photoEvents.onDeleteComment)
   $('.content').on('click', '.card-img-top', photoEvents.onGetPhoto)
+  $('.content').on('click', '.fa-comment', photoEvents.onGetPhoto)
+  // $('.content').on('click', '.like', (event) => $(event.target).removeClass('like fas').addClass('no-like far'))
+  // $('.content').on('click', '.no-like', (event) => $(event.target).removeClass('no-like far').addClass('like fas'))
 
   // Dev code for fast sign in
   $('#signInEmail').val('j@jjj')
