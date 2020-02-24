@@ -55,6 +55,8 @@ const onCreatePhotoFailure = (response) => {
 }
 
 const onDeletePhotoFailure = (response) => {
+  console.log(response)
+  console.log(response.responseText)
   const msg = `Failed to delete photo`
   const type = 'del-photos-f'
   const state = 'danger'

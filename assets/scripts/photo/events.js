@@ -69,7 +69,7 @@ const onSharePhoto = (event) => {
 
 const onAddComment = (event) => {
   event.preventDefault()
-  console.log(event.target)
+
   const form = event.target
   const commentData = getFormFields(form)
   api.addComment(commentData)
