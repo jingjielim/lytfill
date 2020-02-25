@@ -74,7 +74,7 @@ const onGetPhotosSuccess = (data) => {
 
   $('#filters').html(filterHtml)
   $('.content').html(showPhotosHtml)
-  $grid.imagesLoaded().progress(function () {
+  $('.photos').imagesLoaded().progress(function () {
     $grid.isotope('layout')
   })
   $photoContainer.isotope('appended', $photoContainer)
