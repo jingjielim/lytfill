@@ -6,7 +6,9 @@ const store = require('../store')
 
 const onGetPhotos = () => {
   api.getPhotos()
-    .then(ui.onGetPhotosSuccess)
+    .then((response) => {
+      ui.onGetPhotosSuccess(response)
+    })
     .catch(ui.onGetPhotosFailure)
 }
 
@@ -129,6 +131,24 @@ const onFilterUser = (event) => {
   }
 }
 
+const onAddLike = (event) => {
+  const photoId = $(event.target).data('id')
+  console.log(event.target.parentNode)
+  api.addLike(photoId)
+    .then(ui.onAddLikeSuccess)
+    .catch(ui.onAddLikeFailure)
+}
+
+const onDeleteLike = (event) => {
+  const likeId = $(event.target).data('like-id')
+  const photoId = $(event.target).data('id')
+  api.deleteLike(likeId)
+    .then((response) => {
+      ui.onDeleteLikeSuccess(response, photoId)
+    })
+    .catch(ui.onDeleteLikeFailure)
+}
+
 module.exports = {
   onGetPhotos,
   onGetPhoto,
@@ -141,5 +161,7 @@ module.exports = {
   onAddComment,
   onDeleteComment,
   onFilterFn,
-  onFilterUser
+  onFilterUser,
+  onAddLike,
+  onDeleteLike
 }

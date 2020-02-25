@@ -87,6 +87,31 @@ const deleteComment = (commentId) => {
   })
 }
 
+const addLike = (photoId) => {
+  return $.ajax({
+    url: config.apiUrl + '/likes',
+    method: 'POST',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    },
+    data: {
+      "like": {
+        "photo_id": photoId
+      }
+    }
+  })
+}
+
+const deleteLike = (likeId) => {
+  return $.ajax({
+    url: config.apiUrl + '/likes/' + likeId,
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 module.exports = {
   getPhotos,
   createPhoto,
@@ -94,5 +119,7 @@ module.exports = {
   getPhoto,
   updatePhoto,
   addComment,
-  deleteComment
+  deleteComment,
+  addLike,
+  deleteLike
 }

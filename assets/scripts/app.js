@@ -25,6 +25,8 @@ $(() => {
   $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
   $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
   $('.content').on('submit', '.comment-form', photoEvents.onAddComment)
+  $('.content').on('click', '.add-like-btn', photoEvents.onAddLike)
+  $('.content').on('click', '.delete-like-btn', photoEvents.onDeleteLike)
   $('.content').on('click', '.edit-photo-btn', photoEvents.onEditPhoto)
   $('.content').on('click', '.delete-photo-btn', photoEvents.onDeletePhoto)
   $('.content').on('click', '.delete-comment-btn', photoEvents.onDeleteComment)
@@ -36,7 +38,7 @@ $(() => {
   // $('.content').on('click', '.no-like', (event) => $(event.target).removeClass('no-like far').addClass('like fas'))
 
   // Dev code for fast sign in
-  // $('#signInEmail').val('jingjie@gmail.com')
-  // $('#signInPass').val('1')
-  // $('.sign-in-form').submit()
+  $('#signInEmail').val('Ward@gmail.com')
+  $('#signInPass').val('1')
+  $('.sign-in-form').submit()
 })

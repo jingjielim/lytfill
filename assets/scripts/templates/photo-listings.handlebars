@@ -1,24 +1,29 @@
+<div class="col-md-6 col-lg-4 col-xl-3 grid-item {{photo.user.name}}">
+  <div class="card mx-auto my-2"  data-id="{{photo.id}}">
+    <img src="{{photo.site}}" class="card-img-top clickable" alt="..." data-id="{{photo.id}}">
+    <div class="card-body pt-2">
 
-{{#each photos as |photo|}}
-  <div class="col-md-6 col-lg-4 col-xl-3 grid-item {{photo.user.name}}">
-    <div class="card mx-auto my-2"  data-id="{{photo.id}}">
-      <img src="{{photo.site}}" class="card-img-top clickable" alt="..." data-id="{{photo.id}}">
-      <div class="card-body pt-2">
-        <div class="">
-          <!-- {{#if photo.num_comments}}
-            {{photo.num_comments}}
-          {{/if}}
-          <i class="far fa-heart no-like"></i> -->
-          {{#if photo.num_comments}}
-            {{photo.num_comments}}
-          {{/if}}
-          <i class="far fa-comment clickable" data-id="{{photo.id}}"></i>
-        </div>
-        <p class="card-text">
-          {{limit photo.description 50}}
-        </p>
-        <p class="card-text"><small class="text-muted">{{photo.user.name}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
+      {{#if isSignedIn}}
+      <div class="icons-{{photo.id}}">
+        <span id="like-icon-{{photo.id}}">
+          {{> like-icon isLikedByUser=isLikedByUser likeId=likeId photoId=photo.id}}
+        </span>
+        <i class="far fa-comment clickable" data-id="{{photo.id}}"></i>
       </div>
+      {{/if}}
+
+      <p class="card-text">
+        {{limit photo.description 50}}
+      </p>
+      <p class="card-text"><small class="text-muted">{{photo.user.name}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
+
+      <span class="like-number">
+        {{photo.num_likes}} likes
+      </span>
+
+      {{#if photo.num_comments}}
+        <span>{{photo.num_comments}} comments</span>
+      {{/if}}
     </div>
   </div>
-{{/each}}
+</div>

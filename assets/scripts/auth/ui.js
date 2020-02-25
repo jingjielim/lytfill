@@ -50,7 +50,6 @@ const onSignUpFailure = (response) => {
 const onSignInSuccess = (response) => {
   $('.sign-in-form').trigger('reset')
   store.user = response.user
-
   const msg = `${store.user.name} signed in`
   const state = 'success'
   const type = 'sign-in-s'
@@ -72,7 +71,6 @@ const onSignInFailure = (response) => {
 }
 
 const onSignOutSuccess = (response) => {
-  store.user = null
   const msg = 'Signed out successfully'
   const state = 'success'
   const type = 'sign-out-s'

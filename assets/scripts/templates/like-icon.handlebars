@@ -1,0 +1,5 @@
+{{#if isLikedByUser}}
+  <i class="fas fa-heart clickable delete-like-btn" name:"filled" data-id="{{photoId}}" data-like-id="{{likeId}}"></i>
+{{else}}
+  <i class="far fa-heart clickable add-like-btn" name:"empty" data-id="{{photoId}}"></i>
+{{/if}}

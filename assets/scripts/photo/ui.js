@@ -7,6 +7,7 @@ const sharePhotoTemplate = require('../templates/share-photo.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
 const commentTemplate = require('../templates/render-new-comment.handlebars')
 const filterTemplate = require('../templates/filter-template.handlebars')
+const likeIconTemplate = require('../templates/like-icon.handlebars')
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
@@ -40,10 +41,26 @@ const onGetPhotosSuccess = (data) => {
   const filterHtml = filterTemplate({isSignedIn: isSignedIn})
   $('#filters').html(filterHtml)
   // Render the photos and append to isotope node
-  const showPhotosHtml = showPhotosTemplate({photos: data.photos})
-  $('.content').html(showPhotosHtml)
-  $photoContainer.isotope('appended', $photoContainer)
+  let indexPhotosHtml = ''
+  data.photos.forEach(photo => {
+    let isLikedByUser = false
+    let likeId = null
+    if (store.user) {
+      const didFindUser = photo.likes.find(like => like['owner'] === store.user.name)
+      if (didFindUser) {
+      }
 
+      if (didFindUser) {
+        isLikedByUser = true
+        likeId = didFindUser['id']
+      }
+    }
+
+    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId})
+    indexPhotosHtml += photoCard
+  })
+  $('.content').html(indexPhotosHtml)
+  $photoContainer.isotope('appended', $photoContainer)
   // Wait for photos to load and then layout the images nicely
   $grid.imagesLoaded().progress(function () {
     $grid.isotope('layout')
@@ -68,8 +85,15 @@ const onGetPhotoSuccess = (response) => {
 
 const onGetPhotoComments = (response) => {
   let showCommentsHtml = ''
+  let username
+  if (store.user) {
+    username = store.user.name
+  } else {
+    username = null
+  }
   response.photo.comments.forEach(comment => {
-    const commentHtml = commentTemplate({comment: comment, isUserOwner: (comment.owner === store.user.name)})
+    const isUserOwner = (username === comment.owner)
+    const commentHtml = commentTemplate({comment: comment, isUserOwner: isUserOwner})
     showCommentsHtml += (commentHtml)
   })
   $('.comments').append(showCommentsHtml)
@@ -178,6 +202,33 @@ const onFilterUserFailure = (response) => {
   sysMsg(type, state, msg)
 }
 
+const onAddLikeSuccess = (response, numLikes) => {
+  const photoId = response.like.photo.id
+  // console.log(photoId)
+  const likeId = response.like.id
+  const likeIconHtml = likeIconTemplate({isLikedByUser: true, likeId: likeId, photoId: photoId})
+  $(`#like-icon-${photoId}`).html(likeIconHtml)
+}
+
+const onAddLikeFailure = (response) => {
+  const msg = `Error: Could not like photo :(`
+  const type = 'get-photo-f'
+  const state = 'danger'
+  sysMsg(type, state, msg)
+}
+
+const onDeleteLikeSuccess = (response, photoId) => {
+  const likeIconHtml = likeIconTemplate({isLikedByUser: false, photoId: photoId})
+  $(`#like-icon-${photoId}`).html(likeIconHtml)
+  // $(`#like-number`).html(likeNumberHtml)
+}
+
+const onDeleteLikeFailure = (response) => {
+  const msg = `Error: Could not unlike photo :(`
+  const type = 'get-photo-f'
+  const state = 'danger'
+  sysMsg(type, state, msg)
+}
 module.exports = {
   onGetPhotosSuccess,
   onGetPhotosFailure,
@@ -196,5 +247,9 @@ module.exports = {
   onAddCommentFailure,
   onDeleteCommentSuccess,
   onDeleteCommentFailure,
-  onFilterUserFailure
+  onFilterUserFailure,
+  onAddLikeSuccess,
+  onAddLikeFailure,
+  onDeleteLikeSuccess,
+  onDeleteLikeFailure
 }
