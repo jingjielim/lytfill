@@ -1,9 +1,9 @@
 <form class="form-inline user-search-form">
-  <input placeholder="Username" type="text" class="form-control form-control-sm mr-2 mt-1" name="user[name]">
-  <button class="btn btn-primary btn-sm mt-1" >Search</button>
+  <input placeholder="Username" type="text" class="form-control form-control-sm mr-2 mt-1" name="user[name]" required>
+  <button type="submit" class="btn btn-primary btn-sm mt-1" >Search</button>
 </form>
 
 {{#if isSignedIn}}
-  <button type="button" class="btn btn-sm" data-filter="myPhotos">My Photos</button>
-  <button type="button" class="btn btn-sm" data-filter="notMyPhotos">Not My Photos</button>
+  <button type="button" class="btn btn-sm filter-btn" data-filter="myPhotos">My Photos</button>
+  <button type="button" class="btn btn-sm filter-btn" data-filter="notMyPhotos">Not My Photos</button>
 {{/if}}

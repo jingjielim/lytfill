@@ -7,7 +7,6 @@ const sharePhotoTemplate = require('../templates/share-photo.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
 const commentTemplate = require('../templates/render-new-comment.handlebars')
 const filterTemplate = require('../templates/filter-template.handlebars')
-const getFormFields = require('../../../lib/get-form-fields')
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
@@ -25,59 +24,31 @@ const onSharePhoto = () => {
 }
 
 const onGetPhotosSuccess = (data) => {
+  // Initialise isotope
   const $grid = $('.photos').isotope({
     itemSelector: '.grid-item'
   })
-
-  const filterFns = {
-    myPhotos: function () {
-      return `.${store.user.name}`
-    },
-    notMyPhotos: function () {
-      return `:not('.${store.user.name}')`
-    }
-  }
-
-  $('#filters').on('click', 'button', (event) => {
-    let filterValue = $(event.target).data('filter')
-    if (filterFns[filterValue]) {
-      filterValue = filterFns[filterValue]()
-    }
-    $grid.isotope({ filter: filterValue })
-  })
-
-  $('#filters').on('submit', '.user-search-form', (event) => {
-    event.preventDefault()
-    const form = event.target
-    const userData = getFormFields(form)
-    $grid.isotope({ filter: `.${userData.user.name}` })
-    console.log()
-    if (!$photoContainer.isotope('getFilteredItemElements').length) {
-      const msg = `Error: User has not uploaded photos or User not found`
-      const type = 'get-photo-f'
-      const state = 'danger'
-      sysMsg(type, state, msg)
-      $grid.isotope({ filter: `*` })
-    }
-
-    $('.user-search-form').trigger('reset')
-  })
-
+  // Remove all the previous isotope elements as it will be overwritten
+  const $photoContainer = $('.photos')
+  $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
+  // Check if there is a current user
   let isSignedIn = false
   if (store.user) {
     isSignedIn = true
   }
+  // Based on current user status, render the filter options
   const filterHtml = filterTemplate({isSignedIn: isSignedIn})
-  const showPhotosHtml = showPhotosTemplate({photos: data.photos})
-  const $photoContainer = $('.photos')
-  $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
-
   $('#filters').html(filterHtml)
+  // Render the photos and append to isotope node
+  const showPhotosHtml = showPhotosTemplate({photos: data.photos})
   $('.content').html(showPhotosHtml)
-  $('.photos').imagesLoaded().progress(function () {
+  $photoContainer.isotope('appended', $photoContainer)
+
+  // Wait for photos to load and then layout the images nicely
+  $grid.imagesLoaded().progress(function () {
     $grid.isotope('layout')
   })
-  $photoContainer.isotope('appended', $photoContainer)
+  // Remove all filters on the photos for new image feed
   $grid.isotope({ filter: `*` })
 }
 
@@ -112,6 +83,10 @@ const onGetPhotoFailure = (response) => {
 }
 
 const onCreatePhotoSuccess = (response) => {
+  const msg = `Uploaded photo`
+  const type = 'create-photo-s'
+  const state = 'success'
+  sysMsg(type, state, msg)
   $('.create-photo-form').trigger('reset')
 }
 
@@ -121,12 +96,14 @@ const onCreatePhotoFailure = (response) => {
   const state = 'danger'
   sysMsg(type, state, msg)
 }
+
 const onDeletePhotoSuccess = (response) => {
   const msg = `Photo deleted`
   const type = 'delete-photo-s'
   const state = 'success'
   sysMsg(type, state, msg)
 }
+
 const onDeletePhotoFailure = (response) => {
   const msg = `Failed to delete photo`
   const type = 'del-photos-f'
@@ -161,6 +138,7 @@ const onUpdatePhotoFailure = (response) => {
   const state = 'danger'
   sysMsg(type, state, msg)
 }
+
 const onAddCommentSuccess = (response) => {
   $('.comment-form').trigger('reset')
   const newCommentHtml = commentTemplate({comment: response.comment, isUserOwner: (response.comment.owner === store.user.name)})
@@ -188,9 +166,18 @@ const onDeleteCommentFailure = (response) => {
   sysMsg(type, state, msg)
 }
 
-// const onGetMyPhotos = (user) => {
-//   $grid.isotope({ filter: `.${user}` })
-// }
+const onFilterUserFailure = (response) => {
+  const $grid = $('.photos').isotope({
+    itemSelector: '.grid-item'
+  })
+  $grid.isotope({ filter: `*` })
+
+  const msg = `Error: User has not uploaded photos or User not found`
+  const type = 'get-photo-f'
+  const state = 'danger'
+  sysMsg(type, state, msg)
+}
+
 module.exports = {
   onGetPhotosSuccess,
   onGetPhotosFailure,
@@ -208,5 +195,6 @@ module.exports = {
   onAddCommentSuccess,
   onAddCommentFailure,
   onDeleteCommentSuccess,
-  onDeleteCommentFailure
+  onDeleteCommentFailure,
+  onFilterUserFailure
 }

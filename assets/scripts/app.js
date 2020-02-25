@@ -30,6 +30,8 @@ $(() => {
   $('.content').on('click', '.delete-comment-btn', photoEvents.onDeleteComment)
   $('.content').on('click', '.card-img-top', photoEvents.onGetPhoto)
   $('.content').on('click', '.fa-comment', photoEvents.onGetPhoto)
+  $('#filters').on('click', '.filter-btn', photoEvents.onFilterFn)
+  $('#filters').on('submit', '.user-search-form', photoEvents.onFilterUser)
   // $('.content').on('click', '.like', (event) => $(event.target).removeClass('like fas').addClass('no-like far'))
   // $('.content').on('click', '.no-like', (event) => $(event.target).removeClass('no-like far').addClass('like fas'))
 

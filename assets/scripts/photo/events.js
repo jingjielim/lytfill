@@ -2,6 +2,7 @@
 const getFormFields = require('../../../lib/get-form-fields')
 const api = require('./api')
 const ui = require('./ui')
+const store = require('../store')
 
 const onGetPhotos = () => {
   api.getPhotos()
@@ -90,11 +91,43 @@ const onDeleteComment = (event) => {
     .catch(ui.onDeleteCommentFailure)
 }
 
-// const onGetMyPhotos = (event) => {
-//
-//   const user = $(event.target).data('user')
-//   ui.onGetMyPhotos(user)
-// }
+const filterFns = {
+  myPhotos: function () {
+    return `.${store.user.name}`
+  },
+  notMyPhotos: function () {
+    return `:not('.${store.user.name}')`
+  }
+}
+
+const onFilterFn = (event) => {
+  const $grid = $('.photos').isotope({
+    itemSelector: '.grid-item'
+  })
+  let filterValue = $(event.target).data('filter')
+  if (filterFns[filterValue]) {
+    filterValue = filterFns[filterValue]()
+  }
+  $grid.isotope({ filter: filterValue })
+}
+
+const onFilterUser = (event) => {
+  event.preventDefault()
+  const form = event.target
+  const userData = getFormFields(form)
+  $('.user-search-form').trigger('reset')
+  const $grid = $('.photos').isotope({
+    itemSelector: '.grid-item'
+  })
+  // If any string is entered as search term, try to filter with search term
+  if (userData.user.name) {
+    $grid.isotope({ filter: `.${userData.user.name}` })
+  }
+  // If nothing found based on search term return an error
+  if (!$('.photos').isotope('getFilteredItemElements').length) {
+    ui.onFilterUserFailure()
+  }
+}
 
 module.exports = {
   onGetPhotos,
@@ -106,5 +139,7 @@ module.exports = {
   onSharePhoto,
   onPreviewPhoto,
   onAddComment,
-  onDeleteComment
+  onDeleteComment,
+  onFilterFn,
+  onFilterUser
 }
