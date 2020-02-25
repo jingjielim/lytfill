@@ -65,6 +65,7 @@ const onGetPhotosSuccess = (data) => {
   })
   // Remove all filters on the photos for new image feed
   $grid.isotope({ filter: `*` })
+  window.scrollTo(0, 0)
 }
 
 const onGetPhotosFailure = (response) => {
@@ -79,6 +80,7 @@ const onGetPhotoSuccess = (response) => {
   $('.content').html(showPhotoHtml)
   $('#filters').empty()
   onGetPhotoComments(response)
+  window.scrollTo(0, 0)
 }
 
 const onGetPhotoComments = (response) => {
@@ -137,6 +139,7 @@ const onEditPhotoSuccess = (response) => {
   const editPhotoHtml = editPhotoTemplate({photo: response.photo})
   $('.content').html(editPhotoHtml)
   $('#filters').empty()
+  window.scrollTo(0, 0)
 }
 
 const onEditPhotoFailure = (response) => {

@@ -17,7 +17,10 @@ $(() => {
 
   // Photo Event Listeners
   $('.content').on('click', '.preview', () => {
-    photoEvents.onPreviewPhoto($('.photo-url').val())
+    if ($('.photo-url').val()) {
+      photoEvents.onPreviewPhoto($('.photo-url').val())
+      // to add error when nothing entered
+    }
   })
   $('.navbar').on('click', '.share-photo', photoEvents.onSharePhoto)
   $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
