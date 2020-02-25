@@ -133,7 +133,7 @@ const onFilterUser = (event) => {
 
 const onAddLike = (event) => {
   const photoId = $(event.target).data('id')
-  console.log(event.target.parentNode)
+  console.log($(event.target).parent().nextUntil('span'))
   api.addLike(photoId)
     .then(ui.onAddLikeSuccess)
     .catch(ui.onAddLikeFailure)

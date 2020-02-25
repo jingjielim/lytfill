@@ -17,8 +17,8 @@
       </p>
       <p class="card-text"><small class="text-muted">{{photo.user.name}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
 
-      <span class="like-number">
-        {{photo.num_likes}} likes
+      <span class="like-word-{{photo.id}}">
+        {{>like-word isPlural=isPlural numLikes=photo.num_likes photoId=photo.id}}
       </span>
 
       {{#if photo.num_comments}}

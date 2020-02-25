@@ -8,6 +8,7 @@ const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
 const commentTemplate = require('../templates/render-new-comment.handlebars')
 const filterTemplate = require('../templates/filter-template.handlebars')
 const likeIconTemplate = require('../templates/like-icon.handlebars')
+const likeWordTemplate = require('../templates/like-word.handlebars')
 const store = require('../store')
 
 const sysMsg = (type, state, msg) => {
@@ -48,15 +49,12 @@ const onGetPhotosSuccess = (data) => {
     if (store.user) {
       const didFindUser = photo.likes.find(like => like['owner'] === store.user.name)
       if (didFindUser) {
-      }
-
-      if (didFindUser) {
         isLikedByUser = true
         likeId = didFindUser['id']
       }
     }
-
-    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId})
+    const isPlural = photo.num_likes > 1
+    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isPlural: isPlural})
     indexPhotosHtml += photoCard
   })
   $('.content').html(indexPhotosHtml)
@@ -202,12 +200,16 @@ const onFilterUserFailure = (response) => {
   sysMsg(type, state, msg)
 }
 
-const onAddLikeSuccess = (response, numLikes) => {
+const onAddLikeSuccess = (response) => {
   const photoId = response.like.photo.id
   // console.log(photoId)
   const likeId = response.like.id
   const likeIconHtml = likeIconTemplate({isLikedByUser: true, likeId: likeId, photoId: photoId})
   $(`#like-icon-${photoId}`).html(likeIconHtml)
+  const numLikes = parseInt($(`.like-number-${photoId}`).html()) + 1
+  const isPlural = numLikes > 1
+  const likeWordHtml = likeWordTemplate({isPlural: isPlural, numLikes: numLikes, photoId: photoId})
+  $(`.like-word-${photoId}`).html(likeWordHtml)
 }
 
 const onAddLikeFailure = (response) => {
@@ -220,7 +222,10 @@ const onAddLikeFailure = (response) => {
 const onDeleteLikeSuccess = (response, photoId) => {
   const likeIconHtml = likeIconTemplate({isLikedByUser: false, photoId: photoId})
   $(`#like-icon-${photoId}`).html(likeIconHtml)
-  // $(`#like-number`).html(likeNumberHtml)
+  const numLikes = parseInt($(`.like-number-${photoId}`).html()) - 1
+  const isPlural = numLikes > 1
+  const likeWordHtml = likeWordTemplate({isPlural: isPlural, numLikes: numLikes, photoId: photoId})
+  $(`.like-word-${photoId}`).html(likeWordHtml)
 }
 
 const onDeleteLikeFailure = (response) => {
