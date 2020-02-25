@@ -1,3 +1,4 @@
+
 {{#each photos as |photo|}}
   <div class="col-md-6 col-lg-4 col-xl-3 grid-item {{photo.user.name}}">
     <div class="card mx-auto my-2"  data-id="{{photo.id}}">
@@ -18,8 +19,6 @@
         </p>
         <p class="card-text"><small class="text-muted">{{photo.user.name}} {{timeDiff photo.created_at photo.updated_at}}</small></p>
       </div>
-
     </div>
   </div>
-
 {{/each}}

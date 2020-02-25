@@ -90,13 +90,11 @@ const onDeleteComment = (event) => {
     .catch(ui.onDeleteCommentFailure)
 }
 
-const onGetMyPhotos = (event) => {
-  const $grid = $('.grid').isotope({
-    itemSelector: '.grid-item'
-  })
-  const user = $(event.target).data('user')
-  $grid.isotope({ filter: `.${user}` })
-}
+// const onGetMyPhotos = (event) => {
+//
+//   const user = $(event.target).data('user')
+//   ui.onGetMyPhotos(user)
+// }
 
 module.exports = {
   onGetPhotos,
@@ -108,6 +106,5 @@ module.exports = {
   onSharePhoto,
   onPreviewPhoto,
   onAddComment,
-  onDeleteComment,
-  onGetMyPhotos
+  onDeleteComment
 }

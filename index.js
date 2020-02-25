@@ -16,5 +16,5 @@ require('./assets/styles/index.scss')
 const $ = require('jquery')
 const jQueryBridget = require('jquery-bridget')
 const Isotope = require('isotope-layout')
-
+require('imagesLoaded')
 jQueryBridget('isotope', Isotope, $)

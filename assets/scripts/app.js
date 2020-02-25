@@ -21,7 +21,6 @@ $(() => {
   })
   $('.navbar').on('click', '.share-photo', photoEvents.onSharePhoto)
   $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
-  $('.navbar').on('click', '.my-photos', photoEvents.onGetMyPhotos)
 
   $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
   $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
