@@ -13,6 +13,7 @@ const likeWordTemplate = require('../templates/like-word.handlebars')
 const store = require('../store')
 
 const onPageLoadSuccess = (response, $grid) => {
+  store.data = response
   const $photoContainer = $('.photos')
   let indexPhotosHtml = ''
   // For each photo, need to know if photo has been liked by current user and the like Id
@@ -44,6 +45,7 @@ const onSharePhoto = () => {
 }
 
 const onGetPhotosSuccess = (data, $grid) => {
+  store.data = data
   // Remove all the previous isotope elements as it will be overwritten
   const $photoContainer = $('.photos')
   $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
@@ -83,7 +85,7 @@ const onGetPhotosSuccess = (data, $grid) => {
     indexPhotosHtml += photoCard
   })
   // Render all cards at once
-  $('.content').html(indexPhotosHtml)
+  $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
   $photoContainer.isotope('appended', $photoContainer)
   // Wait for photos to load and then layout the images nicely
   $grid.imagesLoaded().progress(function () {
@@ -213,7 +215,7 @@ const onFilterUserFailure = ($grid) => {
   failureMsg(type, msg)
 }
 
-const onAddLikeSuccess = (getPhotoRes, addLikeRes) => {
+const onAddLikeSuccess = (getPhotoRes, addLikeRes, $grid) => {
   const photoId = getPhotoRes.photo.id
   const likeId = addLikeRes.like.id
   const numLikes = getPhotoRes.photo.num_likes
@@ -224,6 +226,7 @@ const onAddLikeSuccess = (getPhotoRes, addLikeRes) => {
 
   const likeWordHtml = likeWordTemplate({isPlural: isPlural, numLikes: numLikes, photoId: photoId})
   $(`.like-word-${photoId}`).html(likeWordHtml)
+  $grid.isotope('updateSortData').isotope()
 }
 
 const onAddLikeFailure = (response) => {
@@ -232,14 +235,17 @@ const onAddLikeFailure = (response) => {
   failureMsg(type, msg)
 }
 
-const onDeleteLikeSuccess = (getPhotoRes, delLikeRes) => {
+const onDeleteLikeSuccess = (getPhotoRes, delLikeRes, $grid) => {
   const photoId = getPhotoRes.photo.id
   const numLikes = getPhotoRes.photo.num_likes
   const likeIconHtml = likeIconTemplate({isLikedByUser: false, photoId: photoId})
   $(`#like-icon-${photoId}`).html(likeIconHtml)
   const isPlural = numLikes > 1
   const likeWordHtml = likeWordTemplate({isPlural: isPlural, numLikes: numLikes, photoId: photoId})
+  // $grid.isotope('remove', $(`.grid-item.${photoId}`))
   $(`.like-word-${photoId}`).html(likeWordHtml)
+  // $grid.isotope('appended', $(`.grid-item.${photoId}`))
+  $grid.isotope('updateSortData').isotope()
 }
 
 const onDeleteLikeFailure = (response) => {

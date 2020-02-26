@@ -7,7 +7,7 @@ const store = require('../store')
 const addEventListeners = ($grid) => {
   $('.navbar').on('click', '.share-photo', onSharePhoto)
   $('.navbar').on('click', '.navbar-brand', (event) => {
-    onGetPhotos(event, $grid)
+    onBackHome(event, $grid)
   })
   $('.content').on('click', '.preview', onPreviewPhoto)
   $('.content').on('submit', '.create-photo-form', onCreatePhoto)
@@ -16,22 +16,15 @@ const addEventListeners = ($grid) => {
   $('.content').on('click', '.delete-photo-btn', onDeletePhoto)
   $('.content').on('submit', '.comment-form', onAddComment)
   $('.content').on('click', '.delete-comment-btn', onDeleteComment)
-  $('.content').on('click', '.add-like-btn', onAddLike)
-  $('.content').on('click', '.delete-like-btn', onDeleteLike)
+  $('.content').on('click', '.add-like-btn', (event) => onAddLike(event, $grid))
+  $('.content').on('click', '.delete-like-btn', (event) => onDeleteLike(event, $grid))
   $('.content').on('click', '.card-img-top', onGetPhoto)
   $('.content').on('click', '.fa-comment', onGetPhoto)
-  $('#filters').on('click', '.filter-btn', (event) => {
-    onFilterFn(event, $grid)
-  })
-  $('#filters').on('submit', '.user-search-form', (event) => {
-    onFilterUser(event, $grid)
-  })
-  $('#filters').on('click', '.sort-btn', (event) => {
-    onSortFn(event, $grid)
-  })
-  $('#filters').on('click', '.shuffle-btn', (event) => {
-    onShuffle(event, $grid)
-  })
+  $('.content').on('click', '.home', () => onBackHome($grid))
+  $('#filters').on('click', '.filter-btn', (event) => onFilterFn(event, $grid))
+  $('#filters').on('submit', '.user-search-form', (event) => onFilterUser(event, $grid))
+  $('#filters').on('click', '.sort-btn', (event) => onSortFn(event, $grid))
+  $('#filters').on('click', '.shuffle-btn', (event) => onShuffle(event, $grid))
 }
 
 const onPageLoad = ($grid) => {
@@ -41,6 +34,10 @@ const onPageLoad = ($grid) => {
       ui.onPageLoadSuccess(response, $grid)
     })
     .catch(ui.onPageLoadFailure)
+}
+
+const onBackHome = ($grid) => {
+  ui.onGetPhotosSuccess(store.data, $grid)
 }
 
 const onSharePhoto = (event) => {
@@ -136,27 +133,27 @@ const onDeleteComment = (event) => {
     .catch(ui.onDeleteCommentFailure)
 }
 
-const onAddLike = (event) => {
+const onAddLike = (event, $grid) => {
   const photoId = $(event.target).data('id')
   api.addLike(photoId)
     .then((addLikeRes) => {
       api.getPhoto(photoId)
         .then((getPhotoRes) => {
-          ui.onAddLikeSuccess(getPhotoRes, addLikeRes)
+          ui.onAddLikeSuccess(getPhotoRes, addLikeRes, $grid)
         })
         .catch(ui.onGetPhotoFailure)
     })
     .catch(ui.onAddLikeFailure)
 }
 
-const onDeleteLike = (event) => {
+const onDeleteLike = (event, $grid) => {
   const likeId = $(event.target).data('like-id')
   const photoId = $(event.target).data('id')
   api.deleteLike(likeId)
     .then((delLikeRes) => {
       api.getPhoto(photoId)
         .then((getPhotoRes) => {
-          ui.onDeleteLikeSuccess(getPhotoRes, delLikeRes)
+          ui.onDeleteLikeSuccess(getPhotoRes, delLikeRes, $grid)
         })
         .catch(ui.onGetPhotoFailure)
     })
@@ -176,7 +173,6 @@ const onFilterUser = (event, $grid) => {
   const form = event.target
   const userData = getFormFields(form)
   $('.user-search-form').trigger('reset')
-  console.log(userData)
   if (userData.user.name) {
     $grid.isotope({ filter: `.${userData.user.name}` })
   }
@@ -188,7 +184,6 @@ const onFilterUser = (event, $grid) => {
 
 const onSortFn = (event, $grid) => {
   const sortValue = $(event.target).data('sort-value')
-  console.log(sortValue)
   $grid.isotope({ sortBy: sortValue, sortAscending: false })
 }
 

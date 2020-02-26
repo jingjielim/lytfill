@@ -17,6 +17,7 @@ const onSignUpFailure = (response) => {
   for (const key in resText) {
     msg = msg + ' ' + key + ' ' + resText[key] + '. '
   }
+  // msg = 'Sign up failed!'
   const type = 'sign-up-f'
   modalSysMsg(type, msg)
 }
