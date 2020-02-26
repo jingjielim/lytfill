@@ -2,7 +2,8 @@
 body {
   font-family: 'Montserrat';
 }
-.photo-show{
+
+.photo-show {
   max-height: 50vh;
   object-fit: contain;
 }
@@ -31,11 +32,3 @@ body {
     z-index: 1;
     border-radius: 0px;
 }
-
-// .success {
-//   color: limegreen;
-// }
-//
-// .danger {
-//   color: red;
-// }

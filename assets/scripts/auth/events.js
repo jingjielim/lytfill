@@ -31,9 +31,16 @@ const onSignIn = (event) => {
   const form = event.target
   const userData = getFormFields(form)
   api.signIn(userData)
-    .then(function (response) {
+    .then((response) => {
       ui.onSignInSuccess(response)
-      photoEvents.onGetPhotos()
+      if ($('img.photo-show').length === 1) {
+        const event = {
+          'target': $('img.photo-show')[0].outerHTML
+        }
+        photoEvents.onGetPhoto(event)
+      } else {
+        photoEvents.onGetPhotos()
+      }
     })
     .catch(ui.onSignInFailure)
 }
@@ -54,7 +61,14 @@ const onSignOut = (event) => {
   api.signOut()
     .then(() => {
       ui.onSignOutSuccess()
-      onPageLoad()
+      if ($('img.photo-show').length === 1) {
+        const event = {
+          'target': $('img.photo-show')[0].outerHTML
+        }
+        photoEvents.onGetPhoto(event)
+      } else {
+        photoEvents.onGetPhotos()
+      }
     })
     .catch(ui.onSignOutFailure)
 }

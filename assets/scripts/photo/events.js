@@ -6,13 +6,12 @@ const store = require('../store')
 
 const onGetPhotos = () => {
   api.getPhotos()
-    .then((response) => {
-      ui.onGetPhotosSuccess(response)
-    })
+    .then(ui.onGetPhotosSuccess)
     .catch(ui.onGetPhotosFailure)
 }
 
 const onGetPhoto = (event) => {
+  console.log(event.target)
   const photoId = $(event.target).data('id')
 
   api.getPhoto(photoId)
@@ -38,7 +37,7 @@ const onDeletePhoto = (event) => {
 
   const photoId = $(event.target).data('id')
   api.deletePhoto(photoId)
-    .then(function () { onGetPhotos(event) })
+    .then(() => { onGetPhotos(event) })
     .catch(ui.onDeletePhotoFailure)
 }
 
@@ -135,7 +134,13 @@ const onAddLike = (event) => {
   const photoId = $(event.target).data('id')
   console.log($(event.target).parent().nextUntil('span'))
   api.addLike(photoId)
-    .then(ui.onAddLikeSuccess)
+    .then((addLikeRes) => {
+      api.getPhoto(photoId)
+        .then((getPhotoRes) => {
+          ui.onAddLikeSuccess(getPhotoRes, addLikeRes)
+        })
+        .catch(ui.onGetPhotoFailure)
+    })
     .catch(ui.onAddLikeFailure)
 }
 
@@ -143,8 +148,12 @@ const onDeleteLike = (event) => {
   const likeId = $(event.target).data('like-id')
   const photoId = $(event.target).data('id')
   api.deleteLike(likeId)
-    .then((response) => {
-      ui.onDeleteLikeSuccess(response, photoId)
+    .then((delLikeRes) => {
+      api.getPhoto(photoId)
+        .then((getPhotoRes) => {
+          ui.onDeleteLikeSuccess(getPhotoRes, delLikeRes)
+        })
+        .catch(ui.onGetPhotoFailure)
     })
     .catch(ui.onDeleteLikeFailure)
 }

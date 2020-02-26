@@ -2,26 +2,6 @@ const store = require('../store')
 const signOutNavTemplate = require('../templates/signed-out-nav.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
 
-const sysMsg = (type, state, msg) => {
-  $('.sys-message').append(`<div class="${type}  alert row alert-dismissible fade show" role="alert"> ${msg} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button> </div>`)
-  $(`.${type}`).addClass(`alert-${state}`)
-  setTimeout(() => {
-    $(`.${type}`).remove()
-  }, 5000)
-}
-
-const modalSysMsg = (type, state, msg) => {
-  $(`.${type}-message`).append(`<div class="${type}  alert row alert-dismissible fade show" role="alert"> ${msg} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button> </div>`)
-  $(`.${type}`).addClass(`alert-${state}`)
-  setTimeout(() => {
-    $(`.${type}`).remove()
-  }, 5000)
-}
-
 const onPageLoad = () => {
   $('.navbar').html(signOutNavTemplate())
 }
@@ -30,8 +10,7 @@ const onSignUpSuccess = (response) => {
   $('.sign-up-form').trigger('reset')
   const msg = `Sign up success for ${response.user.name}`
   const type = 'sign-up-s'
-  const state = 'success'
-  sysMsg(type, state, msg)
+  sysMsg(type, msg)
   $('.navbar').html(signOutNavTemplate())
   $('#signUpModal').modal('hide')
 }
@@ -43,17 +22,15 @@ const onSignUpFailure = (response) => {
     msg = msg + ' ' + key + ' ' + resText[key] + '. '
   }
   const type = 'sign-up-f'
-  const state = 'danger'
-  modalSysMsg(type, state, msg)
+  modalSysMsg(type, msg)
 }
 
 const onSignInSuccess = (response) => {
   $('.sign-in-form').trigger('reset')
   store.user = response.user
   const msg = `${store.user.name} signed in`
-  const state = 'success'
   const type = 'sign-in-s'
-  sysMsg(type, state, msg)
+  sysMsg(type, msg)
   $('.navbar').html(signInNavTemplate({user: store.user.name}))
   $('#signInModal').modal('hide')
 }
@@ -65,31 +42,29 @@ const onSignInFailure = (response) => {
   } else {
     msg = 'Sign in failed'
   }
-  const state = 'danger'
   const type = 'sign-in-f'
-  modalSysMsg(type, state, msg)
+  modalSysMsg(type, msg)
 }
 
 const onSignOutSuccess = (response) => {
+  store.user = null
+  $('.navbar').html(signOutNavTemplate())
   const msg = 'Signed out successfully'
-  const state = 'success'
   const type = 'sign-out-s'
-  sysMsg(type, state, msg)
+  sysMsg(type, msg)
 }
 
 const onSignOutFailure = (response) => {
   const msg = 'Signed out failed'
-  const state = 'danger'
   const type = 'sign-out-f'
-  sysMsg(type, state, msg)
+  sysMsg(type, msg)
 }
 
 const onChangePasswordSuccess = (response) => {
   $('.change-pw-form').trigger('reset')
   const msg = 'Change password success'
-  const state = 'success'
   const type = 'change-pw-s'
-  sysMsg(type, state, msg)
+  sysMsg(type, msg)
   $('.navbar').html(signInNavTemplate({user: store.user.name}))
   $('#changePWModal').modal('hide')
 }
@@ -97,9 +72,30 @@ const onChangePasswordSuccess = (response) => {
 const onChangePasswordFailure = (response) => {
   $('.change-pw-form').trigger('reset')
   const msg = 'Change password failed'
-  const state = 'danger'
   const type = 'change-pw-f'
-  modalSysMsg(type, state, msg)
+  modalSysMsg(type, msg)
+}
+
+const msgHtml = (type, msg) => {
+  return `<div class="${type} alert row alert-dismissible fade show" role="alert"> ${msg} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+  </button> </div>`
+}
+
+const sysMsg = (type, msg) => {
+  $('.sys-message').append(msgHtml(type, msg))
+  $(`.${type}`).addClass(`alert-success`)
+  setTimeout(() => {
+    $(`.${type}`).remove()
+  }, 5000)
+}
+
+const modalSysMsg = (type, msg) => {
+  $(`.${type}-message`).append(msgHtml(type, msg))
+  $(`.${type}`).addClass(`alert-danger`)
+  setTimeout(() => {
+    $(`.${type}`).remove()
+  }, 5000)
 }
 
 module.exports = {
