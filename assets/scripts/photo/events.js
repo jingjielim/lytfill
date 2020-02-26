@@ -6,9 +6,7 @@ const store = require('../store')
 
 const addEventListeners = ($grid) => {
   $('.navbar').on('click', '.share-photo', onSharePhoto)
-  $('.navbar').on('click', '.navbar-brand', (event) => {
-    onBackHome(event, $grid)
-  })
+  $('.navbar').on('click', '.navbar-brand', (event) => onBackHome(event, $grid))
   $('.content').on('click', '.preview', onPreviewPhoto)
   $('.content').on('submit', '.create-photo-form', onCreatePhoto)
   $('.content').on('click', '.edit-photo-btn', onEditPhoto)
@@ -20,7 +18,7 @@ const addEventListeners = ($grid) => {
   $('.content').on('click', '.delete-like-btn', (event) => onDeleteLike(event, $grid))
   $('.content').on('click', '.card-img-top', onGetPhoto)
   $('.content').on('click', '.fa-comment', onGetPhoto)
-  $('.content').on('click', '.home', () => onBackHome($grid))
+  $('.content').on('click', '.home', (event) => onBackHome(event, $grid))
   $('#filters').on('click', '.filter-btn', (event) => onFilterFn(event, $grid))
   $('#filters').on('submit', '.user-search-form', (event) => onFilterUser(event, $grid))
   $('#filters').on('click', '.sort-btn', (event) => onSortFn(event, $grid))
@@ -36,7 +34,7 @@ const onPageLoad = ($grid) => {
     .catch(ui.onPageLoadFailure)
 }
 
-const onBackHome = ($grid) => {
+const onBackHome = (event, $grid) => {
   ui.onGetPhotosSuccess(store.data, $grid)
 }
 

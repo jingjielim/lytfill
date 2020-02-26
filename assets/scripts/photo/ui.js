@@ -30,9 +30,12 @@ const onPageLoadSuccess = (response, $grid) => {
     indexPhotosHtml += photoCard
   })
   $('.content').html(indexPhotosHtml)
-  $photoContainer.isotope('appended', $photoContainer)
-  $grid.imagesLoaded().progress(function () {
+  $grid.isotope('appended', $photoContainer)
+  $photoContainer.imagesLoaded().progress(function () {
     $grid.isotope('layout')
+  })
+  $photoContainer.imagesLoaded().done(function () {
+    $grid.isotope('shuffle')
   })
   $('.navbar').html(signOutNavTemplate())
   const filterHtml = filterTemplate({isSignedIn: false})
@@ -44,8 +47,8 @@ const onSharePhoto = () => {
   $('.navbar').html(signInNavTemplate({user: store.user.name}))
 }
 
-const onGetPhotosSuccess = (data, $grid) => {
-  store.data = data
+const onGetPhotosSuccess = (response, $grid) => {
+  store.data = response
   // Remove all the previous isotope elements as it will be overwritten
   const $photoContainer = $('.photos')
   $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
@@ -60,7 +63,7 @@ const onGetPhotosSuccess = (data, $grid) => {
   // Render the photos and append to isotope node
   let indexPhotosHtml = ''
   // For each photo, need to know if photo has been liked by current user and the like Id
-  data.photos.forEach(photo => {
+  response.photos.forEach(photo => {
     let isLikedByUser = false
     let likeId = null
     let likeClass = null
@@ -86,10 +89,10 @@ const onGetPhotosSuccess = (data, $grid) => {
   })
   // Render all cards at once
   $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
-  $photoContainer.isotope('appended', $photoContainer)
-  // Wait for photos to load and then layout the images nicely
-  $grid.imagesLoaded().progress(function () {
-    $grid.isotope('layout')
+  // Append the cards to isotope again
+  $grid.isotope('appended', $photoContainer)
+  $photoContainer.imagesLoaded().done(function () {
+    $grid.isotope('shuffle')
   })
   // Remove all filters on the photos for new image feed
   $grid.isotope({ filter: `*` })
