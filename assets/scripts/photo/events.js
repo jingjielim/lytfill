@@ -4,14 +4,67 @@ const api = require('./api')
 const ui = require('./ui')
 const store = require('../store')
 
-const onGetPhotos = () => {
+const addEventListeners = ($grid) => {
+  $('.navbar').on('click', '.share-photo', onSharePhoto)
+  $('.navbar').on('click', '.navbar-brand', (event) => {
+    onGetPhotos(event, $grid)
+  })
+  $('.content').on('click', '.preview', onPreviewPhoto)
+  $('.content').on('submit', '.create-photo-form', onCreatePhoto)
+  $('.content').on('click', '.edit-photo-btn', onEditPhoto)
+  $('.content').on('submit', '.update-photo-form', onUpdatePhoto)
+  $('.content').on('click', '.delete-photo-btn', onDeletePhoto)
+  $('.content').on('submit', '.comment-form', onAddComment)
+  $('.content').on('click', '.delete-comment-btn', onDeleteComment)
+  $('.content').on('click', '.add-like-btn', onAddLike)
+  $('.content').on('click', '.delete-like-btn', onDeleteLike)
+  $('.content').on('click', '.card-img-top', onGetPhoto)
+  $('.content').on('click', '.fa-comment', onGetPhoto)
+  $('#filters').on('click', '.filter-btn', (event) => {
+    onFilterFn(event, $grid)
+  })
+  $('#filters').on('submit', '.user-search-form', (event) => {
+    onFilterUser(event, $grid)
+  })
+  $('#filters').on('click', '.sort-btn', (event) => {
+    onSortFn(event, $grid)
+  })
+  $('#filters').on('click', '.shuffle-btn', (event) => {
+    onShuffle(event, $grid)
+  })
+}
+
+const onPageLoad = ($grid) => {
+  store.user = null
   api.getPhotos()
-    .then(ui.onGetPhotosSuccess)
+    .then((response) => {
+      ui.onPageLoadSuccess(response, $grid)
+    })
+    .catch(ui.onPageLoadFailure)
+}
+
+const onSharePhoto = (event) => {
+  event.preventDefault()
+  ui.onSharePhoto()
+}
+
+const onGetPhotos = (event, $grid) => {
+  api.getPhotos()
+    .then((response) => {
+      ui.onGetPhotosSuccess(response, $grid)
+    })
     .catch(ui.onGetPhotosFailure)
 }
 
+const onPreviewPhoto = () => {
+  if ($('.photo-url').val()) {
+    ui.onPreviewPhotoSuccess($('.photo-url').val())
+  } else {
+    ui.onPreviewPhotoFailure()
+  }
+}
+
 const onGetPhoto = (event) => {
-  console.log(event.target)
   const photoId = $(event.target).data('id')
 
   api.getPhoto(photoId)
@@ -30,15 +83,6 @@ const onCreatePhoto = (event) => {
       onGetPhotos(event)
     })
     .catch(ui.onCreatePhotoFailure)
-}
-
-const onDeletePhoto = (event) => {
-  event.preventDefault()
-
-  const photoId = $(event.target).data('id')
-  api.deletePhoto(photoId)
-    .then(() => { onGetPhotos(event) })
-    .catch(ui.onDeletePhotoFailure)
 }
 
 const onEditPhoto = (event) => {
@@ -63,9 +107,13 @@ const onUpdatePhoto = (event) => {
     .catch(ui.onUpdatePhotoFailure)
 }
 
-const onSharePhoto = (event) => {
+const onDeletePhoto = (event) => {
   event.preventDefault()
-  ui.onSharePhoto()
+
+  const photoId = $(event.target).data('id')
+  api.deletePhoto(photoId)
+    .then(() => { onGetPhotos(event) })
+    .catch(ui.onDeletePhotoFailure)
 }
 
 const onAddComment = (event) => {
@@ -78,10 +126,6 @@ const onAddComment = (event) => {
     .catch(ui.onAddCommentFailure)
 }
 
-const onPreviewPhoto = (photoUrl) => {
-  $('.preview-img').attr('src', photoUrl).addClass('img-thumbnail')
-}
-
 const onDeleteComment = (event) => {
   const commentId = $(event.target).data('id')
   api.deleteComment(commentId)
@@ -92,47 +136,8 @@ const onDeleteComment = (event) => {
     .catch(ui.onDeleteCommentFailure)
 }
 
-const filterFns = {
-  myPhotos: function () {
-    return `.${store.user.name}`
-  },
-  notMyPhotos: function () {
-    return `:not('.${store.user.name}')`
-  }
-}
-
-const onFilterFn = (event) => {
-  const $grid = $('.photos').isotope({
-    itemSelector: '.grid-item'
-  })
-  let filterValue = $(event.target).data('filter')
-  if (filterFns[filterValue]) {
-    filterValue = filterFns[filterValue]()
-  }
-  $grid.isotope({ filter: filterValue })
-}
-
-const onFilterUser = (event) => {
-  event.preventDefault()
-  const form = event.target
-  const userData = getFormFields(form)
-  $('.user-search-form').trigger('reset')
-  const $grid = $('.photos').isotope({
-    itemSelector: '.grid-item'
-  })
-  // If any string is entered as search term, try to filter with search term
-  if (userData.user.name) {
-    $grid.isotope({ filter: `.${userData.user.name}` })
-  }
-  // If nothing found based on search term return an error
-  if (!$('.photos').isotope('getFilteredItemElements').length) {
-    ui.onFilterUserFailure()
-  }
-}
-
 const onAddLike = (event) => {
   const photoId = $(event.target).data('id')
-  console.log($(event.target).parent().nextUntil('span'))
   api.addLike(photoId)
     .then((addLikeRes) => {
       api.getPhoto(photoId)
@@ -158,7 +163,57 @@ const onDeleteLike = (event) => {
     .catch(ui.onDeleteLikeFailure)
 }
 
+const onFilterFn = (event, $grid) => {
+  let filterValue = $(event.target).data('filter')
+  if (filterFns[filterValue]) {
+    filterValue = filterFns[filterValue]()
+  }
+  $grid.isotope({ filter: filterValue })
+}
+
+const onFilterUser = (event, $grid) => {
+  event.preventDefault()
+  const form = event.target
+  const userData = getFormFields(form)
+  $('.user-search-form').trigger('reset')
+  console.log(userData)
+  if (userData.user.name) {
+    $grid.isotope({ filter: `.${userData.user.name}` })
+  }
+  // If nothing found based on search term return an error
+  if (!$('.photos').isotope('getFilteredItemElements').length) {
+    ui.onFilterUserFailure($grid)
+  }
+}
+
+const onSortFn = (event, $grid) => {
+  const sortValue = $(event.target).data('sort-value')
+  console.log(sortValue)
+  $grid.isotope({ sortBy: sortValue, sortAscending: false })
+}
+
+const onShuffle = (event, $grid) => {
+  $grid.isotope('shuffle')
+}
+
+const filterFns = {
+  myPhotos: function () {
+    return `.${store.user.name}`
+  },
+  notMyPhotos: function () {
+    return `:not('.${store.user.name}')`
+  },
+  likedByUser: function () {
+    return '.likedByUser'
+  },
+  all: function () {
+    return '*'
+  }
+}
+
 module.exports = {
+  onPageLoad,
+  addEventListeners,
   onGetPhotos,
   onGetPhoto,
   onCreatePhoto,

@@ -8,40 +8,17 @@ const photoEvents = require('./photo/events')
 // require('./example')
 
 $(() => {
-  authEvents.onPageLoad()
-  // Auth Event Listeners
-  $('.sign-up-form').on('submit', authEvents.onSignUp)
-  $('.sign-in-form').on('submit', authEvents.onSignIn)
-  $('.navbar').on('click', '.sign-out-btn', authEvents.onSignOut)
-  $('.change-pw-form').on('submit', authEvents.onChangePassword)
-
-  // Photo Event Listeners
-  $('.content').on('click', '.preview', () => {
-    if ($('.photo-url').val()) {
-      photoEvents.onPreviewPhoto($('.photo-url').val())
-      // to add error when nothing entered
+  const $grid = $('.photos').isotope({
+    itemSelector: '.grid-item',
+    getSortData: {
+      likeNum: '.like-number parseInt',
+      comNum: '.com-number parseInt',
+      mostRecent: '.date'
     }
   })
-  $('.navbar').on('click', '.share-photo', photoEvents.onSharePhoto)
-  $('.navbar').on('click', '.navbar-brand', photoEvents.onGetPhotos)
-
-  $('.content').on('submit', '.create-photo-form', photoEvents.onCreatePhoto)
-  $('.content').on('submit', '.update-photo-form', photoEvents.onUpdatePhoto)
-  $('.content').on('submit', '.comment-form', photoEvents.onAddComment)
-  $('.content').on('click', '.add-like-btn', photoEvents.onAddLike)
-  $('.content').on('click', '.delete-like-btn', photoEvents.onDeleteLike)
-  $('.content').on('click', '.edit-photo-btn', photoEvents.onEditPhoto)
-  $('.content').on('click', '.delete-photo-btn', photoEvents.onDeletePhoto)
-  $('.content').on('click', '.delete-comment-btn', photoEvents.onDeleteComment)
-  $('.content').on('click', '.card-img-top', photoEvents.onGetPhoto)
-  $('.content').on('click', '.fa-comment', photoEvents.onGetPhoto)
-  $('#filters').on('click', '.filter-btn', photoEvents.onFilterFn)
-  $('#filters').on('submit', '.user-search-form', photoEvents.onFilterUser)
-  // $('.content').on('click', '.like', (event) => $(event.target).removeClass('like fas').addClass('no-like far'))
-  // $('.content').on('click', '.no-like', (event) => $(event.target).removeClass('no-like far').addClass('like fas'))
-
-  // Dev code for fast sign in
-  $('#signInEmail').val('Ward@gmail.com')
-  $('#signInPass').val('1')
-  $('.sign-in-form').submit()
+  photoEvents.onPageLoad($grid)
+  // Auth event Listeners
+  authEvents.addEventListeners($grid)
+  // Photo Event Listeners
+  photoEvents.addEventListeners($grid)
 })

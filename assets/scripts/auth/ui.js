@@ -2,10 +2,6 @@ const store = require('../store')
 const signOutNavTemplate = require('../templates/signed-out-nav.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
 
-const onPageLoad = () => {
-  $('.navbar').html(signOutNavTemplate())
-}
-
 const onSignUpSuccess = (response) => {
   $('.sign-up-form').trigger('reset')
   const msg = `Sign up success for ${response.user.name}`
@@ -99,7 +95,6 @@ const modalSysMsg = (type, msg) => {
 }
 
 module.exports = {
-  onPageLoad,
   onSignUpSuccess,
   onSignUpFailure,
   onSignInSuccess,

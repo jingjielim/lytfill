@@ -1,4 +1,13 @@
-<div class="col-md-6 col-lg-4 col-xl-3 grid-item {{photo.user.name}}">
+<div class="col-md-6 col-lg-4 col-xl-3 grid-item {{photo.user.name}} {{likeClass}}">
+  <div class='like-number sr-only'>
+    {{photo.num_likes}}
+  </div>
+  <div class='com-number sr-only'>
+    {{photo.num_comments}}
+  </div>
+  <div class='date sr-only'>
+    {{photo.updated_at}}
+  </div>
   <div class="card mx-auto my-2"  data-id="{{photo.id}}">
     <img src="{{photo.site}}" class="card-img-top clickable" alt="..." data-id="{{photo.id}}">
     <div class="card-body pt-2">
@@ -22,7 +31,7 @@
       </span>
 
       {{#if photo.num_comments}}
-        {{photo.num_comments}}
+        <span>{{photo.num_comments}}</span>
         {{#if isComPlural}}
         <span> comments</span>
         {{else}}

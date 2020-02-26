@@ -5,23 +5,45 @@ const showPhotoTemplate = require('../templates/photo-show.handlebars')
 const editPhotoTemplate = require('../templates/update-photo.handlebars')
 const sharePhotoTemplate = require('../templates/share-photo.handlebars')
 const signInNavTemplate = require('../templates/signed-in-nav.handlebars')
+const signOutNavTemplate = require('../templates/signed-out-nav.handlebars')
 const commentTemplate = require('../templates/render-new-comment.handlebars')
 const filterTemplate = require('../templates/filter-template.handlebars')
 const likeIconTemplate = require('../templates/like-icon.handlebars')
 const likeWordTemplate = require('../templates/like-word.handlebars')
 const store = require('../store')
 
+const onPageLoadSuccess = (response, $grid) => {
+  const $photoContainer = $('.photos')
+  let indexPhotosHtml = ''
+  // For each photo, need to know if photo has been liked by current user and the like Id
+  response.photos.forEach(photo => {
+    const isLikedByUser = false
+    const likeId = null
+    // Check if there is more than 1 like
+    const isLikePlural = photo.num_likes > 1
+    // Check if there is more than 1 comment
+    const isComPlural = photo.num_comments > 1
+    // Render photo's card
+    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: false, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural})
+    // Add to the list of photo cards
+    indexPhotosHtml += photoCard
+  })
+  $('.content').html(indexPhotosHtml)
+  $photoContainer.isotope('appended', $photoContainer)
+  $grid.imagesLoaded().progress(function () {
+    $grid.isotope('layout')
+  })
+  $('.navbar').html(signOutNavTemplate())
+  const filterHtml = filterTemplate({isSignedIn: false})
+  $('#filters').html(filterHtml)
+}
 const onSharePhoto = () => {
   $('.content').html(sharePhotoTemplate()).attr('style', 'height: auto;')
   $('#filters').empty()
   $('.navbar').html(signInNavTemplate({user: store.user.name}))
 }
 
-const onGetPhotosSuccess = (data) => {
-  // Initialise isotope
-  const $grid = $('.photos').isotope({
-    itemSelector: '.grid-item'
-  })
+const onGetPhotosSuccess = (data, $grid) => {
   // Remove all the previous isotope elements as it will be overwritten
   const $photoContainer = $('.photos')
   $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
@@ -39,6 +61,7 @@ const onGetPhotosSuccess = (data) => {
   data.photos.forEach(photo => {
     let isLikedByUser = false
     let likeId = null
+    let likeClass = null
     // Check if there is a current user
     if (store.user) {
       // Check if current user has liked photo
@@ -47,6 +70,7 @@ const onGetPhotosSuccess = (data) => {
       if (foundUserLiked) {
         isLikedByUser = true
         likeId = foundUserLiked['id']
+        likeClass = 'likedByUser'
       }
     }
     // Check if there is more than 1 like
@@ -54,7 +78,7 @@ const onGetPhotosSuccess = (data) => {
     // Check if there is more than 1 comment
     const isComPlural = photo.num_comments > 1
     // Render photo's card
-    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural})
+    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural, likeClass: likeClass})
     // Add to the list of photo cards
     indexPhotosHtml += photoCard
   })
@@ -181,10 +205,7 @@ const onDeleteCommentFailure = (response) => {
   failureMsg(type, msg)
 }
 
-const onFilterUserFailure = (response) => {
-  const $grid = $('.photos').isotope({
-    itemSelector: '.grid-item'
-  })
+const onFilterUserFailure = ($grid) => {
   $grid.isotope({ filter: `*` })
 
   const msg = `Error: User has not uploaded photos or User not found`
@@ -227,6 +248,16 @@ const onDeleteLikeFailure = (response) => {
   failureMsg(type, msg)
 }
 
+const onPreviewPhotoSuccess = (photoUrl) => {
+  $('.preview-img').attr('src', photoUrl).addClass('img-thumbnail')
+}
+
+const onPreviewPhotoFailure = () => {
+  const msg = `Error: Please enter a Url`
+  const type = 'preview-photo-f'
+  failureMsg(type, msg)
+}
+
 const msgHtml = (type, msg) => {
   return `<div class="${type} alert row alert-dismissible fade show" role="alert"> ${msg} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
   <span aria-hidden="true">&times;</span>
@@ -249,6 +280,7 @@ const failureMsg = (type, msg) => {
 }
 
 module.exports = {
+  onPageLoadSuccess,
   onGetPhotosSuccess,
   onGetPhotosFailure,
   onGetPhotoSuccess,
@@ -270,5 +302,7 @@ module.exports = {
   onAddLikeSuccess,
   onAddLikeFailure,
   onDeleteLikeSuccess,
-  onDeleteLikeFailure
+  onDeleteLikeFailure,
+  onPreviewPhotoSuccess,
+  onPreviewPhotoFailure
 }

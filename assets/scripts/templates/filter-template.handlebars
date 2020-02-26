@@ -1,9 +1,20 @@
-<form class="form-inline user-search-form">
-  <input placeholder="Username" type="text" class="form-control form-control-sm mr-2 mt-1" name="user[name]" required>
-  <button type="submit" class="btn btn-primary btn-sm mt-1" >Search</button>
-</form>
+<div class="row justify-content-center">
+    <!-- <span class="ml-2 my-auto small">Filter by:</span> -->
+    <button class="btn btn-sm filter-btn" data-filter="all">All</button>
+    <form class="form-inline user-search-form">
+      <input placeholder="Username" type="text" class="form-control form-control-sm mr-2 mt-1" name="user[name]" required>
+      <button type="submit" class="btn btn-primary btn-sm mt-1">Search</button>
+    </form>
 
-{{#if isSignedIn}}
-  <button type="button" class="btn btn-sm filter-btn" data-filter="myPhotos">My Photos</button>
-  <button type="button" class="btn btn-sm filter-btn" data-filter="notMyPhotos">Not My Photos</button>
-{{/if}}
+    {{#if isSignedIn}}
+      <button type="button" class="btn btn-sm filter-btn" data-filter="myPhotos">My Photos</button>
+      <button type="button" class="btn btn-sm filter-btn" data-filter="likedByUser">Liked</button>
+    {{/if}}
+</div>
+<div class="row justify-content-center">
+    <!-- <span class="ml-2 my-auto small">Sort By:</span> -->
+    <button class="btn btn-sm sort-btn" data-sort-value="mostRecent">Most Recent</button>
+    <button type="button" class="btn btn-sm sort-btn" data-sort-value="likeNum">Most Likes</button>
+    <button type="button" class="btn btn-sm sort-btn" data-sort-value="comNum">Most Comments</button>
+    <button type="button" class="btn btn-sm shuffle-btn" data-sort-value="shuffle">Shuffle</button>
+</div>
