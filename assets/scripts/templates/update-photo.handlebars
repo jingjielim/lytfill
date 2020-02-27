@@ -4,7 +4,7 @@
     <img src="{{photo.site}}" style="max-height: 200px;" class="preview-img my-2 mx-auto d-block img-thumbnail">
     <div class="form-group form-inline">
       <label for="newURL" class="sr-only">URL</label>
-      <input type="URL" class="form-control my-1 mr-2 photo-url" id="newURL" placeholder="Image URL" style="width: 80%" value="{{photo.site}}" name="photo[site]" required autofocus>
+      <input type="URL" class="form-control my-1 mr-2 photo-url" id="newURL" placeholder="Image URL" style="width: 80%" value="{{photo.site}}" name="photo[site]" required autofocus autocomplete="off" >
 
       <button type="button" class="btn btn-primary preview">Preview</button>
     </div>

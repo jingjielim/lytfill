@@ -8,10 +8,10 @@ const addEventListeners = ($grid) => {
   $('.navbar').on('click', '.share-photo', onSharePhoto)
   $('.navbar').on('click', '.navbar-brand', (event) => onBackHome(event, $grid))
   $('.content').on('click', '.preview', onPreviewPhoto)
-  $('.content').on('submit', '.create-photo-form', onCreatePhoto)
+  $('.content').on('submit', '.create-photo-form', (event) => onCreatePhoto(event, $grid))
   $('.content').on('click', '.edit-photo-btn', onEditPhoto)
-  $('.content').on('submit', '.update-photo-form', onUpdatePhoto)
-  $('.content').on('click', '.delete-photo-btn', onDeletePhoto)
+  $('.content').on('submit', '.update-photo-form', (event) => onUpdatePhoto(event, $grid))
+  $('.content').on('click', '.delete-photo-btn', (event) => onDeletePhoto(event, $grid))
   $('.content').on('submit', '.comment-form', onAddComment)
   $('.content').on('click', '.delete-comment-btn', onDeleteComment)
   $('.content').on('click', '.add-like-btn', (event) => onAddLike(event, $grid))
@@ -67,7 +67,7 @@ const onGetPhoto = (event) => {
     .catch(ui.onGetPhotoFailure)
 }
 
-const onCreatePhoto = (event) => {
+const onCreatePhoto = (event, $grid) => {
   event.preventDefault()
 
   const form = event.target
@@ -75,7 +75,7 @@ const onCreatePhoto = (event) => {
   api.createPhoto(photoData)
     .then(function () {
       ui.onCreatePhotoSuccess()
-      onGetPhotos(event)
+      onGetPhotos(event, $grid)
     })
     .catch(ui.onCreatePhotoFailure)
 }
@@ -102,12 +102,12 @@ const onUpdatePhoto = (event) => {
     .catch(ui.onUpdatePhotoFailure)
 }
 
-const onDeletePhoto = (event) => {
+const onDeletePhoto = (event, $grid) => {
   event.preventDefault()
 
   const photoId = $(event.target).data('id')
   api.deletePhoto(photoId)
-    .then(() => { onGetPhotos(event) })
+    .then(() => { onGetPhotos(event, $grid) })
     .catch(ui.onDeletePhotoFailure)
 }
 
