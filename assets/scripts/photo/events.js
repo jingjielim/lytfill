@@ -34,29 +34,12 @@ const onPageLoad = ($grid) => {
     .catch(ui.onPageLoadFailure)
 }
 
-const onBackHome = (event, $grid) => {
-  ui.onGetPhotosSuccess(store.data, $grid)
-}
-
-const onSharePhoto = (event) => {
-  event.preventDefault()
-  ui.onSharePhoto()
-}
-
 const onGetPhotos = (event, $grid) => {
   api.getPhotos()
     .then((response) => {
       ui.onGetPhotosSuccess(response, $grid)
     })
     .catch(ui.onGetPhotosFailure)
-}
-
-const onPreviewPhoto = () => {
-  if ($('.photo-url').val()) {
-    ui.onPreviewPhotoSuccess($('.photo-url').val())
-  } else {
-    ui.onPreviewPhotoFailure()
-  }
 }
 
 const onGetPhoto = (event) => {
@@ -202,6 +185,33 @@ const filterFns = {
   all: function () {
     return '*'
   }
+}
+
+const onBackHome = (event, $grid) => {
+  ui.onGetPhotosSuccess(store.data, $grid)
+}
+
+const onSharePhoto = (event) => {
+  event.preventDefault()
+  ui.onSharePhoto()
+}
+
+const onPreviewPhoto = () => {
+  if (validURL($('.photo-url').val())) {
+    ui.onPreviewPhotoSuccess($('.photo-url').val())
+  } else {
+    ui.onPreviewPhotoFailure()
+  }
+}
+
+const validURL = (str) => {
+  const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+  return !!pattern.test(str)
 }
 
 module.exports = {
