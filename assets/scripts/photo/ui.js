@@ -50,8 +50,8 @@ const onSharePhoto = () => {
 const onGetPhotosSuccess = (response, $grid) => {
   store.data = response
   // Remove all the previous isotope elements as it will be overwritten
-  const $photoContainer = $('.photos')
-  $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
+  // const $photoContainer = $('.photos')
+  // $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
   // Check if there is a current user
   let isSignedIn = false
   if (store.user) {
@@ -90,10 +90,11 @@ const onGetPhotosSuccess = (response, $grid) => {
   // Render all cards at once
   $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
   // Append the cards to isotope again
-  $grid.isotope('appended', $photoContainer)
-  $photoContainer.imagesLoaded().done(function () {
-    $grid.isotope('shuffle')
-  })
+  $grid.isotope('reloadItems')
+  // $grid.isotope('appended', $photoContainer)
+  // $photoContainer.imagesLoaded().done(function () {
+  //   $grid.isotope('shuffle')
+  // })
   // Remove all filters on the photos for new image feed
   $grid.isotope({ filter: `*` })
   window.scrollTo(0, 0)
@@ -229,7 +230,9 @@ const onAddLikeSuccess = (getPhotoRes, addLikeRes, $grid) => {
 
   const likeWordHtml = likeWordTemplate({isPlural: isPlural, numLikes: numLikes, photoId: photoId})
   $(`.like-word-${photoId}`).html(likeWordHtml)
+  $(`.grid-item.${photoId}`).addClass('likedByUser')
   $grid.isotope('updateSortData').isotope()
+  // $grid.isotope('reloadItems').isotope()
 }
 
 const onAddLikeFailure = (response) => {
@@ -245,10 +248,10 @@ const onDeleteLikeSuccess = (getPhotoRes, delLikeRes, $grid) => {
   $(`#like-icon-${photoId}`).html(likeIconHtml)
   const isPlural = numLikes > 1
   const likeWordHtml = likeWordTemplate({isPlural: isPlural, numLikes: numLikes, photoId: photoId})
-  // $grid.isotope('remove', $(`.grid-item.${photoId}`))
   $(`.like-word-${photoId}`).html(likeWordHtml)
-  // $grid.isotope('appended', $(`.grid-item.${photoId}`))
+  $(`.grid-item.${photoId}`).removeClass('likedByUser')
   $grid.isotope('updateSortData').isotope()
+  // $grid.isotope('reloadItems').isotope()
 }
 
 const onDeleteLikeFailure = (response) => {
