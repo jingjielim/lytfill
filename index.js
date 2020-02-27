@@ -13,10 +13,10 @@ require('./assets/scripts/app.js')
 
 // styles
 require('./assets/styles/index.scss')
-const imagesLoaded = require('imagesLoaded')
 const $ = require('jquery')
-const jQueryBridget = require('jquery-bridget')
 const Isotope = require('isotope-layout')
+const jQueryBridget = require('jquery-bridget')
+const imagesLoaded = require('imagesLoaded')
 
 imagesLoaded.makeJQueryPlugin($)
 

@@ -6,7 +6,7 @@ const store = require('../store')
 
 const addEventListeners = ($grid) => {
   $('.navbar').on('click', '.share-photo', onSharePhoto)
-  $('.navbar').on('click', '.navbar-brand', (event) => onBackHome(event, $grid))
+  $('.navbar').on('click', '.navbar-brand', (event) => onGetPhotos(event, $grid))
   $('.content').on('click', '.preview', onPreviewPhoto)
   $('.content').on('submit', '.create-photo-form', (event) => onCreatePhoto(event, $grid))
   $('.content').on('click', '.edit-photo-btn', onEditPhoto)
@@ -18,7 +18,7 @@ const addEventListeners = ($grid) => {
   $('.content').on('click', '.delete-like-btn', (event) => onDeleteLike(event, $grid))
   $('.content').on('click', '.card-img-top', onGetPhoto)
   $('.content').on('click', '.fa-comment', onGetPhoto)
-  $('.content').on('click', '.home', (event) => onBackHome(event, $grid))
+  $('.content').on('click', '.home', (event) => onGetPhotos(event, $grid))
   $('#filters').on('click', '.filter-btn', (event) => onFilterFn(event, $grid))
   $('#filters').on('submit', '.user-search-form', (event) => onFilterUser(event, $grid))
   $('#filters').on('click', '.sort-btn', (event) => onSortFn(event, $grid))
@@ -185,10 +185,6 @@ const filterFns = {
   all: function () {
     return '*'
   }
-}
-
-const onBackHome = (event, $grid) => {
-  ui.onGetPhotosSuccess(store.data, $grid)
 }
 
 const onSharePhoto = (event) => {

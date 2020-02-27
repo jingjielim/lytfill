@@ -27,15 +27,12 @@ const onPageLoadSuccess = (response, $grid) => {
     // Render photo's card
     const photoCard = showPhotosTemplate({photo: photo, isSignedIn: false, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural})
     // Add to the list of photo cards
-    indexPhotosHtml += photoCard
+    indexPhotosHtml = photoCard + indexPhotosHtml
   })
   $('.content').html(indexPhotosHtml)
   $grid.isotope('appended', $photoContainer)
   $photoContainer.imagesLoaded().progress(function () {
     $grid.isotope('layout')
-  })
-  $photoContainer.imagesLoaded().done(function () {
-    $grid.isotope('shuffle')
   })
   $('.navbar').html(signOutNavTemplate())
   const filterHtml = filterTemplate({isSignedIn: false})
@@ -49,9 +46,6 @@ const onSharePhoto = () => {
 
 const onGetPhotosSuccess = (response, $grid) => {
   store.data = response
-  // Remove all the previous isotope elements as it will be overwritten
-  // const $photoContainer = $('.photos')
-  // $photoContainer.isotope('remove', $photoContainer.isotope('getItemElements'))
   // Check if there is a current user
   let isSignedIn = false
   if (store.user) {
@@ -85,7 +79,7 @@ const onGetPhotosSuccess = (response, $grid) => {
     // Render photo's card
     const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural, likeClass: likeClass})
     // Add to the list of photo cards
-    indexPhotosHtml += photoCard
+    indexPhotosHtml = photoCard + indexPhotosHtml
   })
   // Render all cards at once
   $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
