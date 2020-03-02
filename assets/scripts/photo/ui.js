@@ -31,8 +31,15 @@ const onPageLoadSuccess = (response, $grid) => {
   })
   $('.content').html(indexPhotosHtml)
   $grid.isotope('appended', $photoContainer)
-  $photoContainer.imagesLoaded().progress(function () {
-    $grid.isotope('layout')
+  $('.lazyload').each(function () {
+    const $module = $(this)
+    const update = function () {
+      $grid.isotope('layout')
+    }
+
+    // Note: Instead of waiting for all images until we initialize the widget
+    // we use event capturing to update the widget's layout progressively.
+    $module.on('load', update)
   })
   $('.navbar').html(signOutNavTemplate())
   const filterHtml = filterTemplate({isSignedIn: false})
@@ -85,10 +92,16 @@ const onGetPhotosSuccess = (response, $grid) => {
   $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
   // Append the cards to isotope again
   $grid.isotope('reloadItems')
-  // $grid.isotope('appended', $photoContainer)
-  // $photoContainer.imagesLoaded().done(function () {
-  //   $grid.isotope('shuffle')
-  // })
+  $('.lazyload').each(function () {
+    const $module = $(this)
+    const update = function () {
+      $grid.isotope('layout')
+    }
+
+    // Note: Instead of waiting for all images until we initialize the widget
+    // we use event capturing to update the widget's layout progressively.
+    $module.on('load', update)
+  })
   // Remove all filters on the photos for new image feed
   $grid.isotope({ filter: `*` })
   window.scrollTo(0, 0)
@@ -266,7 +279,7 @@ const onPreviewPhotoFailure = () => {
 
 const msgHtml = (type, msg) => {
   return `<div class="${type} alert row alert-dismissible fade show" role="alert"> ${msg} <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
+  <span aria-hidden="true">&times</span>
   </button> </div>`
 }
 
