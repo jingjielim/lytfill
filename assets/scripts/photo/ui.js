@@ -13,11 +13,13 @@ const likeWordTemplate = require('../templates/like-word.handlebars')
 const store = require('../store')
 
 const onPageLoadSuccess = (response, $grid) => {
-  store.data = response
+  console.log(response)
+  store.data = response.data
+  const photos = response.data
   const $photoContainer = $('.photos')
   let indexPhotosHtml = ''
   // For each photo, need to know if photo has been liked by current user and the like Id
-  response.photos.forEach(photo => {
+  photos.forEach(photo => {
     const isLikedByUser = false
     const likeId = null
     // Check if there is more than 1 like
@@ -27,7 +29,7 @@ const onPageLoadSuccess = (response, $grid) => {
     // Render photo's card
     const photoCard = showPhotosTemplate({photo: photo, isSignedIn: false, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural})
     // Add to the list of photo cards
-    indexPhotosHtml = photoCard + indexPhotosHtml
+    indexPhotosHtml += photoCard
   })
   $('.content').html(indexPhotosHtml)
   $grid.isotope('appended', $photoContainer)
@@ -86,7 +88,7 @@ const onGetPhotosSuccess = (response, $grid) => {
     // Render photo's card
     const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural, likeClass: likeClass})
     // Add to the list of photo cards
-    indexPhotosHtml = photoCard + indexPhotosHtml
+    indexPhotosHtml += photoCard
   })
   // Render all cards at once
   $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
