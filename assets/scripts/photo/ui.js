@@ -73,6 +73,7 @@ const onPageLoadSuccess = (response, $grid) => {
   store.total_pages = response.meta.total_pages
   const photos = response.photos
   // Append the new photos and layout
+  $grid.isotope({ filter: '*' })
   appendPhotos(photos, $grid)
   // Update navbar
   $('.navbar').html(signOutNavTemplate())
@@ -92,6 +93,7 @@ const onGetPhotosSuccess = (response, $grid) => {
   const photos = response.photos
   $('.content').empty()
   $grid.isotope('reloadItems')
+  $grid.isotope({ filter: '*' })
   appendPhotos(photos, $grid)
   // Remove all filters on the photos for new image feed
   // Based on current user status, render the filter options
