@@ -12,61 +12,15 @@ const likeIconTemplate = require('../templates/like-icon.handlebars')
 const likeWordTemplate = require('../templates/like-word.handlebars')
 const store = require('../store')
 
-const onPageLoadSuccess = (response, $grid) => {
-  console.log(response)
-  store.data = response.data
-  const photos = response.data
-  const $photoContainer = $('.photos')
+const appendPhotos = function (photos, $grid) {
+  // Check if there is a current user
+  store.isSignedIn = false
+  if (store.user) {
+    store.isSignedIn = true
+  }
   let indexPhotosHtml = ''
   // For each photo, need to know if photo has been liked by current user and the like Id
   photos.forEach(photo => {
-    const isLikedByUser = false
-    const likeId = null
-    // Check if there is more than 1 like
-    const isLikePlural = photo.num_likes > 1
-    // Check if there is more than 1 comment
-    const isComPlural = photo.num_comments > 1
-    // Render photo's card
-    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: false, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural})
-    // Add to the list of photo cards
-    indexPhotosHtml += photoCard
-  })
-  $('.content').html(indexPhotosHtml)
-  $grid.isotope('appended', $photoContainer)
-  $('.lazyload').each(function () {
-    const $module = $(this)
-    const update = function () {
-      $grid.isotope('layout')
-    }
-
-    // Note: Instead of waiting for all images until we initialize the widget
-    // we use event capturing to update the widget's layout progressively.
-    $module.on('load', update)
-  })
-  $('.navbar').html(signOutNavTemplate())
-  const filterHtml = filterTemplate({isSignedIn: false})
-  $('#filters').html(filterHtml)
-}
-const onSharePhoto = () => {
-  $('.content').html(sharePhotoTemplate()).attr('style', 'height: auto;')
-  $('#filters').empty()
-  $('.navbar').html(signInNavTemplate({user: store.user.name}))
-}
-
-const onGetPhotosSuccess = (response, $grid) => {
-  store.data = response
-  // Check if there is a current user
-  let isSignedIn = false
-  if (store.user) {
-    isSignedIn = true
-  }
-  // Based on current user status, render the filter options
-  const filterHtml = filterTemplate({isSignedIn: isSignedIn})
-  $('#filters').html(filterHtml)
-  // Render the photos and append to isotope node
-  let indexPhotosHtml = ''
-  // For each photo, need to know if photo has been liked by current user and the like Id
-  response.photos.forEach(photo => {
     let isLikedByUser = false
     let likeId = null
     let likeClass = null
@@ -86,27 +40,89 @@ const onGetPhotosSuccess = (response, $grid) => {
     // Check if there is more than 1 comment
     const isComPlural = photo.num_comments > 1
     // Render photo's card
-    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural, likeClass: likeClass})
+    const photoCard = showPhotosTemplate({photo: photo, isSignedIn: store.isSignedIn, isLikedByUser: isLikedByUser, likeId: likeId, isLikePlural: isLikePlural, isComPlural: isComPlural, likeClass: likeClass, page: store.current_page})
     // Add to the list of photo cards
     indexPhotosHtml += photoCard
   })
-  // Render all cards at once
-  $('.content').html(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
-  // Append the cards to isotope again
-  $grid.isotope('reloadItems')
+  indexPhotosHtml += `<a class='next-page' data-loading='false' data-next-page='${store.next_page}' style="display: none;"></a>`
+  $('.content').append(indexPhotosHtml).attr('style', 'position:relative; height: auto;')
+  $grid.isotope('appended', $(`.page-${store.current_page}`)).isotope()
   $('.lazyload').each(function () {
     const $module = $(this)
     const update = function () {
       $grid.isotope('layout')
     }
-
     // Note: Instead of waiting for all images until we initialize the widget
     // we use event capturing to update the widget's layout progressively.
     $module.on('load', update)
   })
+}
+
+const loadNextPage = function () {
+  if ($('.next-page').data('loading') || store.current_page === store.total_pages) {
+  } else if ($(window).scrollTop() + $(window).height() < $(document).height() - 500) {
+    console.log('click')
+    $('.next-page').click()
+    $('.next-page').data('loading', true)
+  }
+}
+
+const onPageLoadSuccess = (response, $grid) => {
+  store.current_page = response.meta.current_page
+  store.next_page = response.meta.next_page
+  store.total_pages = response.meta.total_pages
+  const photos = response.photos
+  // Append the new photos and layout
+  appendPhotos(photos, $grid)
+  // Update navbar
+  $('.navbar').html(signOutNavTemplate())
+  // Update filter
+  const filterHtml = filterTemplate({isSignedIn: store.isSignedIn})
+  $('#filters').html(filterHtml)
+  // Add event addEventListeners
+  window.addEventListener('resize', loadNextPage)
+  window.addEventListener('scroll', loadNextPage)
+  window.addEventListener('load', loadNextPage)
+}
+
+const onGetPhotosSuccess = (response, $grid) => {
+  store.current_page = response.meta.current_page
+  store.next_page = response.meta.next_page
+  store.total_pages = response.meta.total_pages
+  const photos = response.photos
+  $('.content').empty()
+  $grid.isotope('reloadItems')
+  appendPhotos(photos, $grid)
   // Remove all filters on the photos for new image feed
-  $grid.isotope({ filter: `*` })
+  // Based on current user status, render the filter options
+  const filterHtml = filterTemplate({isSignedIn: store.isSignedIn})
+  $('#filters').html(filterHtml)
   window.scrollTo(0, 0)
+}
+
+const onNextPageSuccessful = (response, $grid) => {
+  console.log('onNextPageSuccessful')
+  console.log(response.meta.current_page)
+  store.current_page = response.meta.current_page
+  store.next_page = response.meta.next_page
+  const photos = response.photos
+  appendPhotos(photos, $grid)
+  $('.lazyload').each(function () {
+    const $module = $(this)
+    const update = function () {
+      $grid.isotope('layout')
+    }
+    // Note: Instead of waiting for all images until we initialize the widget
+    // we use event capturing to update the widget's layout progressively.
+    $module.on('load', update)
+  })
+  // $grid.isotope('reloadItems')
+}
+
+const onSharePhoto = () => {
+  $('.content').html(sharePhotoTemplate()).attr('style', 'height: auto')
+  $('#filters').empty()
+  $('.navbar').html(signInNavTemplate({user: store.user.name}))
 }
 
 const onGetPhotosFailure = (response) => {
@@ -302,6 +318,7 @@ const failureMsg = (type, msg) => {
 
 module.exports = {
   onPageLoadSuccess,
+  onNextPageSuccessful,
   onGetPhotosSuccess,
   onGetPhotosFailure,
   onGetPhotoSuccess,

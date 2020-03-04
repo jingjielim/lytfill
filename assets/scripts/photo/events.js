@@ -23,6 +23,7 @@ const addEventListeners = ($grid) => {
   $('#filters').on('submit', '.user-search-form', (event) => onFilterUser(event, $grid))
   $('#filters').on('click', '.sort-btn', (event) => onSortFn(event, $grid))
   $('#filters').on('click', '.shuffle-btn', (event) => onShuffle(event, $grid))
+  $('.content').on('click', '.next-page', (event) => onNextPage(event, $grid))
 }
 
 const onPageLoad = ($grid) => {
@@ -42,6 +43,14 @@ const onGetPhotos = (event, $grid) => {
     .catch(ui.onGetPhotosFailure)
 }
 
+const onNextPage = (event, $grid) => {
+  api.getNextPage()
+    .then((response) => {
+      $('.next-page').remove()
+      ui.onNextPageSuccessful(response, $grid)
+    })
+    .catch(() => console.log('failed to get next page'))
+}
 const onGetPhoto = (event) => {
   const photoId = $(event.target).data('id')
 

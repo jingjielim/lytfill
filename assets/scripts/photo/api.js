@@ -18,6 +18,23 @@ const getPhotos = () => {
   })
 }
 
+const getNextPage = () => {
+  let auth
+  if (store.user) {
+    auth = {
+      Authorization: 'Token token=' + store.user.token
+    }
+  } else {
+    auth = 'none'
+  }
+
+  return $.ajax({
+    url: config.apiUrl + '/photos' + `?page=${store.next_page}`,
+    method: 'GET',
+    headers: auth
+  })
+}
+
 const getPhoto = (photoId) => {
   let auth
   if (store.user) {
@@ -114,6 +131,7 @@ const deleteLike = (likeId) => {
 
 module.exports = {
   getPhotos,
+  getNextPage,
   createPhoto,
   deletePhoto,
   getPhoto,
