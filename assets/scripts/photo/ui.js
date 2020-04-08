@@ -61,7 +61,6 @@ const appendPhotos = function (photos, $grid) {
 const loadNextPage = function () {
   if ($('.next-page').data('loading') || store.current_page === store.total_pages) {
   } else if ($(window).scrollTop() + $(window).height() < $(document).height() - 500) {
-    console.log('click')
     $('.next-page').click()
     $('.next-page').data('loading', true)
   }
@@ -103,8 +102,6 @@ const onGetPhotosSuccess = (response, $grid) => {
 }
 
 const onNextPageSuccessful = (response, $grid) => {
-  console.log('onNextPageSuccessful')
-  console.log(response.meta.current_page)
   store.current_page = response.meta.current_page
   store.next_page = response.meta.next_page
   const photos = response.photos
@@ -119,6 +116,12 @@ const onNextPageSuccessful = (response, $grid) => {
     $module.on('load', update)
   })
   // $grid.isotope('reloadItems')
+}
+
+const onNextPageFailure = response => {
+  const msg = 'Failed to load more photos. Check connection.'
+  const type = 'next-page-f'
+  failureMsg(type, msg)
 }
 
 const onSharePhoto = () => {
@@ -321,6 +324,7 @@ const failureMsg = (type, msg) => {
 module.exports = {
   onPageLoadSuccess,
   onNextPageSuccessful,
+  onNextPageFailure,
   onGetPhotosSuccess,
   onGetPhotosFailure,
   onGetPhotoSuccess,

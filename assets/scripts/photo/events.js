@@ -49,7 +49,7 @@ const onNextPage = (event, $grid) => {
       $('.next-page').remove()
       ui.onNextPageSuccessful(response, $grid)
     })
-    .catch(() => console.log('failed to get next page'))
+    .catch(ui.onNextPageFailure)
 }
 const onGetPhoto = (event) => {
   const photoId = $(event.target).data('id')
