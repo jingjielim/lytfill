@@ -2,19 +2,23 @@
 
 An app to share all your photos online, view the photos of others, like and comment if you like. Inspired by Instagram.
 
-[Photos Database API](https://github.com/jingjielim/photos-api)
+[Photos Database API Repo](https://github.com/jingjielim/photos-api)
 
-### Technologies
+## Technologies
 - [Ruby on Rails](https://rubyonrails.org/)
 - [Handlebars](https://handlebarsjs.com/)
 - [PostgreSQl](https://www.postgresql.org/)
 - [Heroku](https://www.heroku.com/)
-- [Isotope](https://isotope.metafizzy.co/)
 - DOM
 - jQuery
 - AJAX
 - cURL
 - BootStrap
+
+## Dependencies
+
+- [Isotope](https://isotope.metafizzy.co/)
+- [Pagy](https://ddnexus.github.io/pagy/)
 
 ## Screenshots
 ##### Homepage
@@ -66,6 +70,8 @@ Finally, a package called Isotope was added to incorporate filtering and sorting
 ### Problems encountered
 
 Using a new additional npm package Isotope caused some issues at first due to unfamiliarity with the methods. Reading the documentation and searching for similar problems allowed me to clean up the implementation. The app is now able to dynamically filter and sort when data change on the page.
+
+After seeding the page with hundreds of files, the loading time became unbearably slow due to the time required to retrieve the files. I started to look at splitting up the request into small chunks through pagination. I then chose to use Pagy Gem on the backend to paginate the index so that the data was being sent in smaller chunks. This dramatically reduced the load time for the user.
 
 ## Future improvements
 
