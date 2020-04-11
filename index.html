@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Lytfill</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Do not add `link` tags-->
+      <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" disabled media="screen">
+
+
+      <!-- Do not add `script` tags-->
+      <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+      <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+      <!-- <script src="https://kit.fontawesome.com/d5a6dc251f.js" crossorigin="anonymous" async defer></script> -->
+
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+
+      </nav>
+      <div class="container" id='filters'></div>
+      <div class="container wrapper">
+        <div class="sys-message container alert-fixed"></div>
+
+        <!-- Sign Up Modal Start -->
+        <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Sign Up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="sign-up-f-message"></div>
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="card-body">
+                      <form class="sign-up-form form-group">
+                        <div class="form-group">
+                          <label for="signUpEmail">Email address</label>
+                          <input type="email" class="form-control" id="signUpEmail" placeholder="john@apple.com" name="credentials[email]" required  autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                          <label for="signUpName">Username</label>
+                          <input type="text" class="form-control" id="signUpName" placeholder="JohnnyWalker" name="credentials[name]" required autocomplete="off" >
+                        </div>
+                        <div class="form-group">
+                          <label for="signUpPass">Password</label>
+                          <input type="password" class="form-control" id="signUpPass" placeholder="********"  name="credentials[password]" required autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                          <label for="signUpPassConfirm">Confirm Password</label>
+                          <input type="password" class="form-control" id="signUpPassConfirm" placeholder="********" name="credentials[password_confirmation]" required autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sign In Modal Start -->
+        <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Sign In</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="sign-in-f-message"></div>
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="card-body">
+                      <form class="sign-in-form form-group">
+                        <div class="form-group">
+                          <label for="signInEmail">Email address</label>
+                          <input type="email" class="form-control" id="signInEmail" placeholder="john@apple.com" name="credentials[email]" required autocomplete="off" >
+                        </div>
+                        <div class="form-group">
+                          <label for="signInPass">Password</label>
+                          <input type="password" class="form-control" id="signInPass" placeholder="********"  name="credentials[password]" autocomplete="off" >
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Change password modal -->
+        <div class="modal fade" id="changePWModal" tabindex="-1" role="dialog" aria-labelledby="changePWModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="change-pw-f-message"></div>
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <div class="card-body">
+                      <form class="change-pw-form">
+                        <div class="form-group">
+                          <label for="oldPW">Old Password</label>
+                          <input type="password" class="form-control" id="oldPW" placeholder="********" name="passwords[old]" required autocomplete="off" >
+                        </div>
+                        <div class="form-group">
+                          <label for="newPW">New Password</label>
+                          <input type="password" class="form-control" id="newPW" placeholder="********"  name="passwords[new]" required autocomplete="off" >
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <section class="container pt-2">
+          <div class="content row photos">
+          </div>
+        </section>
+      </div>
+    </body>
+</html>
