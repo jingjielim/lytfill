@@ -21,4 +21,10 @@ $(() => {
   authEvents.addEventListeners($grid)
   // Photo Event Listeners
   photoEvents.addEventListeners($grid)
+  setTimeout(function () {
+    $('#signInEmail').val('Wade@gmail.com')
+    $('#signInPass').val('1')
+    $('.sign-in-form').submit()
+  }, 2000)
+  // Quick sign in option
 })

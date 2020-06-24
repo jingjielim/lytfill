@@ -1,13 +1,19 @@
 <div class="col-12">
-  <form class="create-photo-form">
-    <h5>Share a new photo</h5>
+  <h5>Share a new photo</h5>
+  <form class="create-photo-form" enctype="multipart/form-data">
     <img style="max-height: 200px;"class="preview-img my-2 mx-auto d-block">
     <div class="form-group form-inline">
+      <label for="newFile" class='btn btn-primary'>
+        <input id="newFile" class="d-none" type="file" name="avatar">
+        Select File
+      </label>
+      <span class="ml-2" id="upload-file"></span>
+    </div>
+    <!-- <div class="form-group form-inline">
       <label for="newURL" class="sr-only">URL</label>
       <input type="URL" class="form-control my-1 mr-2 photo-url" id="newURL" placeholder="Image URL" style="width: 80%" name="photo[site]" required autofocus autocomplete="off" >
-
       <button type="button" class="btn btn-primary preview">Preview</button>
-    </div>
+    </div> -->
     <div class="form-group mb-2 mr-2">
       <label for="newDes" class="sr-only">Description</label>
       <textarea autocomplete="off" class="form-control" id="newDes" placeholder="Photo description"  name="photo[description]" rows='5' required></textarea>

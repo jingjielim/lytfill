@@ -3,6 +3,7 @@ const getFormFields = require('../../../lib/get-form-fields')
 const api = require('./api')
 const ui = require('./ui')
 const store = require('../store')
+const config = require('../config')
 
 const addEventListeners = ($grid) => {
   $('.navbar').on('click', '.share-photo', onSharePhoto)
@@ -24,6 +25,37 @@ const addEventListeners = ($grid) => {
   $('#filters').on('click', '.sort-btn', (event) => onSortFn(event, $grid))
   $('#filters').on('click', '.shuffle-btn', (event) => onShuffle(event, $grid))
   $('.content').on('click', '.next-page', (event) => onNextPage(event, $grid))
+  $('.content').on('change', '#newFile', onSelectFile)
+}
+const onSelectFile = event => {
+  if (event.target.files[0].type === 'image/jpeg') {
+    $('#upload-file').html(event.target.files[0].name)
+    store.file = event.target.files[0]
+  } else {
+    $('#upload-file').html('Only jpeg files allowed')
+    store.file = null
+  }
+}
+
+const onUploadFile = async (event) => {
+  const payload = await fetch(`${config.apiUrl}/s3/direct_post`).then(res => {
+    console.log(res)
+    return res.json()
+  })
+  const url = payload.url
+  const formData = new FormData()
+  Object.keys(payload.fields).forEach(key =>
+    formData.append(key, payload.fields[key])
+  )
+  formData.append('file', store.file)
+  const xml = await fetch(url, {
+    method: 'POST',
+    body: formData
+  }).then(res => res.text())
+  const uploadUrl = new DOMParser()
+    .parseFromString(xml, 'application/xml')
+    .getElementsByTagName('Location')[0].textContent
+  return uploadUrl
 }
 
 const onPageLoad = ($grid) => {
@@ -61,15 +93,30 @@ const onGetPhoto = (event) => {
 
 const onCreatePhoto = (event, $grid) => {
   event.preventDefault()
-
+  if (!store.file) {
+    console.log('no file selected')
+    return
+  }
   const form = event.target
   const photoData = getFormFields(form)
-  api.createPhoto(photoData)
+  console.log(photoData)
+  onUploadFile()
+    .then(res => {
+      photoData.photo.site = res
+      return api.createPhoto(photoData)
+    })
     .then(function () {
       ui.onCreatePhotoSuccess()
       onGetPhotos(event, $grid)
     })
     .catch(ui.onCreatePhotoFailure)
+
+  // api.createPhoto(photoData)
+  //   .then(function () {
+  //     ui.onCreatePhotoSuccess()
+  //     onGetPhotos(event, $grid)
+  //   })
+  //   .catch(ui.onCreatePhotoFailure)
 }
 
 const onEditPhoto = (event) => {
